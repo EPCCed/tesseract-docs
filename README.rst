@@ -1,20 +1,20 @@
-Cirrus Documentation
-====================
+Tesseract Documentation
+=======================
 
-Cirrus is EPCC's Tier-2 High Performance Computing (HPC) cluster.
+Tesseract is the name of the Extreme Scaling part of the DiRAC UK national HPC service.
 
 This repository contains the documentation for the service and is linked to a rendered version on ReadTheDocs.
 
 For a guide on the rst file format see `this <http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html>`_ document.
 
-This documentation is drawn from the `Sheffield Iceberg documentation <https://github.com/rcgsheffield/sheffield_hpc>`_  and the `ARCHER <http://www.archer.ac.uk>`_ documentation.
+This documentation is drawn from the `Cirrus Tier2 national HPC service documenation <http://cirrus.readthedocs.io>`_  and the `ARCHER <http://www.archer.ac.uk>`_ documentation.
 
 Rendered Documentation
 ----------------------
 Two versions of the documentation are currently automatically built from this repository:
 
-* `Cirrus Documentation (HTML) on ReadTheDocs <http://cirrus.readthedocs.io/>`_
-* `Cirrus Documentation (PDF) on ReadTheDocs <https://readthedocs.org/projects/cirrus/downloads/pdf/latest/>`_
+* `Tesseract Documentation (HTML) on ReadTheDocs <http://tesseract.readthedocs.io/>`_
+* `Tesseract Documentation (PDF) on ReadTheDocs <https://readthedocs.org/projects/tesseract/downloads/pdf/latest/>`_
 
 How to Contribute
 -----------------
@@ -76,3 +76,4 @@ These files are then automatically converted to HTMl and combined into the web v
 It is important that when editing the files the syntax of the rst files is followed.
 If there are any errors in your changes the build will fail and the documentaion  will not update, you can test your build locally by running ``make html``.
 The easiest way to learn what files should look like is to read the ``rst`` files already in the repository.
+
