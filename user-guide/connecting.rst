@@ -1,32 +1,24 @@
-Connecting to Cirrus
-====================
+Connecting to Tesseract
+=======================
 
-On the Cirrus system interactive access can be achieved via SSH, either
+On the Tesseract system, interactive access can be achieved via SSH, either
 directly from a command line terminal or using an SSH client. In
-addition data can be transfered to and from the Cirrus system using
+addition data can be transfered to and from the Tesseract system using
 ``scp`` from the command line or by using a file transfer client.
 
 This section covers the basic connection methods. The connection
 procedure is then expanded on and the use of SSH agent is described for
 ease of access.
 
-Interactive access
-------------------
-
-To log into Cirrus you should use the "login.cirrus.ac.uk" address:
-
-::
-
-    ssh [userID]@login.cirrus.ac.uk
 
 Initial passwords
 ~~~~~~~~~~~~~~~~~
 
 The SAFE web interface is used to provide your initial password for
-logging onto Cirrus (see the `Tier-2 SAFE Documentation <https://tier2-safe.readthedocs.io>`__
+logging onto Tesseract (see the `DiRAC SAFE Documentation <https://dirac-safe.readthedocs.io>`__
 for more details on requesting accounts and picking up passwords).
 
-**Note:** you may now change your password on the Cirrus machine itself
+**Note:** you may now change your password on the Tesseract machine itself
 using the *passwd* command. This change will not be reflected in the
 SAFE. If you forget your password, you should use the SAFE to request a
 new one-shot password.
@@ -34,32 +26,32 @@ new one-shot password.
 SSH Clients
 -----------
 
-Interaction with Cirrus is done remotely, over an encrypted
+Interaction with Tesseract is done remotely, over an encrypted
 communication channel, Secure Shell version 2 (SSH-2). This allows
-command-line access to one of the login nodes of a Cirrus, from which
+command-line access to one of the login nodes of a Tesseract, from which
 you can run commands or use a command-line text editor to edit files.
 SSH can also be used to run graphical programs such as GUI text editors
 and debuggers when used in conjunction with an X client.
 
-Logging in from Linux and Macs
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Logging in from Linux and MacOS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Linux distributions and OS X each come installed with a terminal
+Linux distributions and MacOS each come installed with a terminal
 application that can be use for SSH access to the login nodes. Linux
 users will have different terminals depending on their distribution and
 window manager (e.g. GNOME Terminal in GNOME, Konsole in KDE). Consult
 your Linux distribution's documentation for details on how to load a
 terminal.
 
-OS X users can use the Terminal application, located in the Utilities
+MacOS users can use the Terminal application, located in the Utilities
 folder within the Applications folder.
 
 You can use the following command from the terminal window to login into
-Cirrus:
+Tesseract:
 
 ::
 
-    ssh username@login.cirrus.ac.uk
+    ssh username@tesseract.epcc.ed.ac.uk
 
 To allow remote programs, especially graphical applications to control
 your local display, such as being able to open up a new GUI window (such
@@ -67,13 +59,13 @@ as for a debugger), use:
 
 ::
 
-    ssh -X username@login.cirrus.ac.uk 
+    ssh -X username@tesseract.epcc.ed.ac.uk
 
 Some sites recommend using the ``-Y`` flag. While this can fix some
 compatibility issues, the ``-X`` flag is more secure.
 
-Current OS X systems do not have an X window system. Users should
-install the XQuartz package to allow for SSH with X11 forwarding on OS X
+Current MacOS systems do not have an X window system. Users should
+install the XQuartz package to allow for SSH with X11 forwarding on MacOS
 systems:
 
 * `XQuartz website <http://www.xquartz.org/>`__
@@ -83,9 +75,9 @@ Logging in from Windows using MobaXterm
 
 A typical Windows installation will not include a terminal client,
 though there are various clients available. We recommend all our Windows
-users to download and install MobaXterm to access Cirrus. It is very
+users to download and install MobaXterm to access Tesseract. It is very
 easy to use and includes an integrated X server with SSH client to run
-any graphical applications on Cirrus.
+any graphical applications on Tesseract.
 
 You can download MobaXterm Home Edition (Installer Edition) from the
 following link:
@@ -127,16 +119,12 @@ client applications to access remote resources, for example:
    Eclipse IDE that allows you to edit your source code on a local
    Eclipse installation and compile and test on a remote host;
 
-**Note:** this description applies if your local machine is Linux or macOS.
+**Note:** this description applies if your local machine is Linux or MacOS.
 The procedure can also be used on Windows using the PuTTY SSH
 terminal with the PuTTYgen key pair generation tool and the Pageant SSH
 Agent. See the `PuTTY
 documentation <http://the.earth.li/~sgtatham/putty/0.62/htmldoc/>`__ for
 more information on how to use these tools.
-
-**Note:** not all remote hosts allow connections using a SSH key pair.
-If you find this method does not work it is worth checking with the
-remote site that such connections are allowed.
 
 Setup a SSH key pair protected by a passphrase
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,7 +171,7 @@ the public part of the key to the remote file:
 
 ::
 
-    -bash-4.1$ cat ~/.ssh/id_rsa.pub | ssh user@login.cirrus.ac.uk 'cat - >> ~/.ssh/authorized_keys'
+    -bash-4.1$ cat ~/.ssh/id_rsa.pub | ssh user@tesseract.epcc.ed.ac.uk 'cat - >> ~/.ssh/authorized_keys'
     Password: [Password]
 
 (remember to replace "user" with your username).
@@ -195,7 +183,7 @@ key pair) rather than your remote machine *password*.
 
 ::
 
-    -bash-4.1$ ssh user@login.cirrus.ac.uk 'date'
+    -bash-4.1$ ssh user@tesseract.epcc.ed.ac.uk 'date'
     Enter passphrase for key '/Home/user/.ssh/id_rsa': [Passphrase]
     Wed May  8 10:36:47 BST 2013
 
@@ -229,7 +217,7 @@ enter your passphrase:
 
 ::
 
-    -bash-4.1$ ssh user@login.cirrus.ac.uk 'date'
+    -bash-4.1$ ssh user@tesseract.epcc.ed.ac.uk 'date'
     Warning: Permanently added the RSA host key for IP address '192.62.216.27' to the list of known hosts.
     Wed May  8 10:42:55 BST 2013
 
@@ -263,19 +251,19 @@ an entry in this file which may look something like:
 
 ::
 
-    Host cirrus
-      HostName login.cirrus.ac.uk
+    Host tesseract
+      HostName tesseract.epcc.ed.ac.uk
       User user
       ForwardAgent yes
 
 (remember to replace "user" with your username).
 
 The "Host cirrus" line defines a short name for the entry. In this case,
-instead of typing "ssh login.cirrus.ac.uk" to access the Cirrus login
-nodes, you could use "ssh cirrus" instead. The remaining lines define
-the options for the "cirrus" host.
+instead of typing "ssh tesseract.epcc.ed.ac.uk" to access the Tesseract login
+nodes, you could use "ssh tesseract" instead. The remaining lines define
+the options for the "tesseract" host.
 
--  ``Hostname login.cirrus.ac.uk`` - defines the full address of the
+-  ``Hostname tesseract.epcc.ed.ac.uk`` - defines the full address of the
    host
 -  ``User username`` - defines the username to use by default for this
    host (replace "username" with your own username on the remote host)
@@ -284,12 +272,12 @@ the options for the "cirrus" host.
    private part of your key on your local machine only and export the
    access to remote sites
 
-Now you can use SSH to access Cirrus without needing to enter my
+Now you can use SSH to access Tesseract without needing to enter my
 username or the full hostname every time:
 
 ::
 
-    -bash-4.1$ ssh cirrus 'date'
+    -bash-4.1$ ssh tesseract 'date'
     Tue Dec 20 16:48:32 GMT 2016
 
 You can set up as many of these entries as you need in your local
