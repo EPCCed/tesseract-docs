@@ -1,0 +1,217 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CP2K &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FLACS" href="flacs.html" />
+    <link rel="prev" title="CASTEP" href="castep.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cp2k">
+<h1>CP2K<a class="headerlink" href="#cp2k" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://www.cp2k.org/">CP2K</a> is a quantum chemistry and solid state physics software package
+that can perform atomistic simulations of solid state, liquid, molecular, periodic, material,
+crystal, and biological systems. CP2K provides a general framework for different modelling methods
+such as DFT using the mixed Gaussian and plane waves approaches GPW and GAPW. Supported theory
+levels include DFTB, LDA, GGA, MP2, RPA, semi-empirical methods (AM1, PM3, PM6, RM1, MNDO, …),
+and classical force fields (AMBER, CHARMM, …). CP2K can do simulations of molecular dynamics,
+metadynamics, Monte Carlo, Ehrenfest dynamics, vibrational analysis, core level spectroscopy,
+energy minimisation, and transition state optimisation using NEB or dimer method.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://manual.cp2k.org/#gsc.tab=0">CP2K Reference Manual</a></li>
+<li><a class="reference external" href="https://www.cp2k.org/howto">CP2K HOWTOs</a></li>
+<li><a class="reference external" href="https://www.cp2k.org/faq">CP2K FAQs</a></li>
+</ul>
+</div>
+<div class="section" id="using-cp2k-on-cirrus">
+<h2>Using CP2K on Cirrus<a class="headerlink" href="#using-cp2k-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p>CP2K is available through the <code class="docutils literal"><span class="pre">cp2k-mpt</span></code> module. MPI only <code class="docutils literal"><span class="pre">cp2k.popt</span></code> and MPI/OpenMP Hybrid
+<code class="docutils literal"><span class="pre">cp2k.psmp</span></code> binaries are available.</p>
+<p><strong>IMPORTANT:</strong> Running cp2k in hybrid OpenMP/MPI mode requires some non-standard steps. Please see
+the <cite>Running CP2K in OpenMP/MPI Hybrid Mode</cite> section below for further details.</p>
+</div>
+<div class="section" id="running-parallel-cp2k-jobs-mpi-only">
+<h2>Running parallel CP2K jobs - MPI Only<a class="headerlink" href="#running-parallel-cp2k-jobs-mpi-only" title="Permalink to this headline">¶</a></h2>
+<p>To run CP2K using MPI only, load the <code class="docutils literal"><span class="pre">cp2k-mpt</span></code> module and use the <code class="docutils literal"><span class="pre">cp2k.popt</span></code> executable.</p>
+<p>For example, the following script will run a CP2K job using 4 nodes (144 cores):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N CP2K_test
+#PBS -l select=4:ncpus=72
+#PBS -l place=excl
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load CASTEP and MPI modules
+module load cp2k-mpt
+module load mpt
+module load intel-cmkl-16
+
+#Ensure that no libraries are inadvertently using threading
+export OMP_NUM_THREADS=1
+
+# Run using input in test.inp
+# Note: &#39;-ppn 36&#39; is required to use all physical cores across
+# nodes as hyperthreading is enabled by default
+mpiexec_mpt -n 144 -ppn 36 cp2k.popt -i test.inp
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-parallel-cp2k-jobs-mpi-openmp-hybrid-mode">
+<h2>Running Parallel CP2K Jobs - MPI/OpenMP Hybrid Mode<a class="headerlink" href="#running-parallel-cp2k-jobs-mpi-openmp-hybrid-mode" title="Permalink to this headline">¶</a></h2>
+<p>To run CP2K using MPI and OpenMP, load the <code class="docutils literal"><span class="pre">cp2k-mpt</span></code> module and use the <code class="docutils literal"><span class="pre">cp2k.psmp</span></code> executable.</p>
+<p>Due to a thread placement bug in SGI MPT’s <code class="docutils literal"><span class="pre">omplace</span></code>, tool for GCC-compiled software, launching
+the executable must be achieved in a different way to other hybrid OpenMP/MPI codes on Cirrus.</p>
+<p>You must first run the <code class="docutils literal"><span class="pre">placement</span></code> tool (included in the module) to produce a thread placement
+file, <cite>place.txt</cite>. For example, if you wish to use 6 threads per process, use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>export OMP_NUM_THREADS=6
+placement $OMP_NUM_THREADS
+</pre></div>
+</div>
+<p>to produce the placement file. Then launch the executable using <code class="docutils literal"><span class="pre">mpiexec_mpt</span></code> and <code class="docutils literal"><span class="pre">dplace</span></code>
+(instead of <code class="docutils literal"><span class="pre">omplace</span></code>) as follows:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">mpiexec_mpt</span> <span class="o">-</span><span class="n">n</span> <span class="mi">6</span> <span class="n">dplace</span> <span class="o">-</span><span class="n">p</span> <span class="n">place</span><span class="o">.</span><span class="n">txt</span> <span class="n">cp2k</span><span class="o">.</span><span class="n">psmp</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>For example, the following script will run a CP2K job using 4 nodes, with 6 OpenMP threads per MPI process:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N CP2K_test
+#PBS -l select=4:ncpus=72
+#PBS -l place=excl
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load CASTEP and MPI modules
+module load cp2k-mpt
+module load mpt
+module load intel-cmkl-16
+
+export OMP_NUM_THREADS=6
+placement $OMP_NUM_THREADS
+
+# Run using input in test.inp
+# Notes:
+#  - &#39;-ppn 6&#39; is required to use six processes per node
+#  - we use &#39;dplace&#39; with the placement file &#39;place.txt&#39; to specify
+#    thread binding
+mpiexec_mpt -n 24 -ppn 6 dplace -p place.txt cp2k.psmp -i test.inp
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CP2K</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-cp2k-on-cirrus">Using CP2K on Cirrus</a></li>
+<li><a class="reference internal" href="#running-parallel-cp2k-jobs-mpi-only">Running parallel CP2K jobs - MPI Only</a></li>
+<li><a class="reference internal" href="#running-parallel-cp2k-jobs-mpi-openmp-hybrid-mode">Running Parallel CP2K Jobs - MPI/OpenMP Hybrid Mode</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="castep.html" title="previous chapter">CASTEP</a></li>
+      <li>Next: <a href="flacs.html" title="next chapter">FLACS</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/cp2k.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/cp2k.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

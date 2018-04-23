@@ -1,0 +1,173 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>VASP &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Intel MKL: BLAS, LAPACK, ScaLAPACK" href="../software-libraries/intel_mkl.html" />
+    <link rel="prev" title="STAR-CCM+" href="starccm+.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="vasp">
+<h1>VASP<a class="headerlink" href="#vasp" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="http://www.vasp.at">Vienna Ab initio Simulation Package (VASP)</a> is a computer program for atomic scale materials modelling, e.g. electronic structure calculations and quantum-mechanical molecular dynamics, from first principles.</p>
+<p>VASP computes an approximate solution to the many-body Schrödinger equation, either within density functional theory (DFT), solving the Kohn-Sham equations, or within the Hartree-Fock (HF) approximation, solving the Roothaan equations. Hybrid functionals that mix the Hartree-Fock approach with density functional theory are implemented as well. Furthermore, Green’s functions methods (GW quasiparticles, and ACFDT-RPA) and many-body perturbation theory (2nd-order Møller-Plesset) are available in VASP.</p>
+<p>In VASP, central quantities, like the one-electron orbitals, the electronic charge density, and the local potential are expressed in plane wave basis sets. The interactions between the electrons and ions are described using norm-conserving or ultrasoft pseudopotentials, or the projector-augmented-wave method.</p>
+<p>To determine the electronic groundstate, VASP makes use of efficient iterative matrix diagonalisation techniques, like the residual minimisation method with direct inversion of the iterative subspace (RMM-DIIS) or blocked Davidson algorithms. These are coupled to highly efficient Broyden and Pulay density mixing schemes to speed up the self-consistency cycle.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://cms.mpi.univie.ac.at/vasp/vasp/vasp.html">VASP Manual</a></li>
+<li><a class="reference external" href="http://www.vasp.at/index.php/faqs/71-how-can-i-purchase-a-vasp-license">VASP Licensing</a></li>
+</ul>
+</div>
+<div class="section" id="using-vasp-on-cirrus">
+<h2>Using VASP on Cirrus<a class="headerlink" href="#using-vasp-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p><strong>VASP is only available to users who have a valid VASP licence.</strong></p>
+<p>If you have a VASP licence and wish to have access to VASP on Cirrus
+please contact the <a class="reference external" href="http://www.cirrus.ac.uk/support/">Cirrus Helpdesk</a>.</p>
+</div>
+<div class="section" id="running-parallel-vasp-jobs">
+<h2>Running parallel VASP jobs<a class="headerlink" href="#running-parallel-vasp-jobs" title="Permalink to this headline">¶</a></h2>
+<p>VASP can exploit multiple nodes on Cirrus and will generally be run in
+exclusive mode over more than one node.</p>
+<p>To access VASP you should load the <code class="docutils literal"><span class="pre">vasp</span></code> module in your job submission scripts:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">add</span> <span class="n">vasp</span>
+</pre></div>
+</div>
+<p>Once loaded, the executables are called:</p>
+<ul class="simple">
+<li>vasp_std - Multiple k-point version</li>
+<li>vasp_gam - GAMMA-point only version</li>
+<li>vasp_ncl - Non-collinear version</li>
+</ul>
+<p>All 5.4.* executables include the additional MD algorithms accessed via the <code class="docutils literal"><span class="pre">MDALGO</span></code> keyword.</p>
+<p>You can access the LDA and PBE pseudopotentials for VASP on Cirrus at:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">y07</span><span class="o">/</span><span class="n">vasp5</span><span class="o">/</span><span class="mf">5.4</span><span class="o">.</span><span class="mi">4</span><span class="o">-</span><span class="n">intel17</span><span class="o">-</span><span class="n">mpt214</span><span class="o">/</span><span class="n">pot</span>
+</pre></div>
+</div>
+<p>The following script will run a VASP job using 4 nodes (144 cores).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N VASP_test
+#PBS -l select=4:ncpus=72
+#PBS -l place=excl
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load VASP module
+module load vasp
+
+# Run standard VASP executable
+# Note: &#39;-ppn 36&#39; is required to use all physical cores across
+# nodes as hyperthreading is enabled by default
+mpiexec_mpt -n 144 -ppn 36 vasp_std
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">VASP</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-vasp-on-cirrus">Using VASP on Cirrus</a></li>
+<li><a class="reference internal" href="#running-parallel-vasp-jobs">Running parallel VASP jobs</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="starccm+.html" title="previous chapter">STAR-CCM+</a></li>
+      <li>Next: <a href="../software-libraries/intel_mkl.html" title="next chapter">Intel MKL: BLAS, LAPACK, ScaLAPACK</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/vasp.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/vasp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

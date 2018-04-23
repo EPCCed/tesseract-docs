@@ -1,0 +1,242 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Transferring data from INDY to Cirrus &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Debugging using Allinea DDT" href="../software-tools/ddt.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="transferring-data-from-indy-to-cirrus">
+<h1>Transferring data from INDY to Cirrus<a class="headerlink" href="#transferring-data-from-indy-to-cirrus" title="Permalink to this headline">¶</a></h1>
+<p>This document outlines methods and tips for transferring data from
+INDY to Cirrus for users who are migrating from the old INDY-linux
+system to the new Cirrus system.</p>
+<p><strong>Note:</strong> This guide is not intended for users of the INDY-windows
+service. Different arrangements will be made for INDY Windows HPC
+users.</p>
+<p>If you have any questions about transferring data from INDY-linux to
+Cirrus then please <a class="reference external" href="mailto:support&#37;&#52;&#48;cirrus&#46;ac&#46;uk">contact the helpdesk</a></p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>As INDY-linux and Cirrus are both colocated at EPCC’s ACF data
+centre the most efficient way to transfer data between them is
+directly using SSH. This will use the high-bandwidth data links
+between the two systems at the ACF.</p>
+<p>A two stange transfer process via your home site will generally
+see worse performance than direct transfer. However, this
+approach may be useful if you want to take a local, backup
+copy of your data during the move.</p>
+<p><strong>Note:</strong> Unlike INDY-linux, the Cirrus file systems are currently
+not backed-up in any way so we strongly recommend that you take
+a copy of any critical data to a local resource before the end
+of the INDY-linux service.</p>
+</div>
+<div class="section" id="minimum-requirements">
+<h2>Minimum Requirements<a class="headerlink" href="#minimum-requirements" title="Permalink to this headline">¶</a></h2>
+<p>In order to transfer data from INDY-linux to Cirrus using a direct
+copy over SSH you will need the following:</p>
+<ul class="simple">
+<li>Access to your account on INDY-linux</li>
+<li>An account on Cirrus with enough disk quota to hold the
+data you are transferring</li>
+<li>A SSH client application that you can use to log into Cirrus or
+INDY-linux</li>
+</ul>
+</div>
+<div class="section" id="data-transfer-via-ssh">
+<h2>Data Transfer via SSH<a class="headerlink" href="#data-transfer-via-ssh" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way of transferring data to Cirrus from INDY-linux is to use one of
+the standard programs based on the SSH protocol such as <code class="docutils literal"><span class="pre">scp</span></code>,
+<code class="docutils literal"><span class="pre">sftp</span></code> or <code class="docutils literal"><span class="pre">rsync</span></code>. These all use the same underlying mechanism (ssh)
+as you normally use to log-in to Cirrus/INDY-linux. So, once the the command has
+been executed via the command line, you will be prompted for your
+password for the specified account on the <strong>remote machine</strong>.</p>
+<p>To avoid having to type in your password multiple times you can set up a
+<em>ssh-key</em> as documented in the User Guide at <a class="reference internal" href="../user-guide/connecting.html"><span class="doc">Connecting to Cirrus</span></a></p>
+<div class="section" id="ssh-transfer-performance-considerations">
+<h3>SSH Transfer Performance Considerations<a class="headerlink" href="#ssh-transfer-performance-considerations" title="Permalink to this headline">¶</a></h3>
+<p>The ssh command encrypts all traffic it sends. This means that
+file-transfer using ssh consumes a relatively large amount of cpu time
+at both ends of the transfer. The login nodes for Cirrus and INDY-linux have
+fairly fast processors that can sustain about 100 MB/s transfer.
+The encryption algorithm used is
+negotiated between the ssh-client and the ssh-server. There are command
+line flags that allow you to specify a preference for which encryption
+algorithm should be used. You may be able to improve transfer speeds by
+reqeusting a different algorithm than the default. The <em>arcfour</em>
+algorithm is usually quite fast if both hosts support it.</p>
+<p>A single ssh based transfer will usually not be able to saturate the
+available network bandwidth or the available disk bandwidth so you may
+see an overall improvement by running several data transfer operations
+in parallel. To reduce metadata interactions it is a good idea to
+overlap transfers of files from different directories.</p>
+<p>In addition, you should consider the following when transferring data:</p>
+<ul class="simple">
+<li>Only transfer those files that are required. Consider which data you
+really need to keep.</li>
+<li>Combine lots of small files into a single tar file, to reduce the
+overheads associated in initiating many separate data transfers (over
+SSH each file counts as an individual transfer).</li>
+<li>Compress data before sending it, e.g. using gzip.</li>
+</ul>
+</div>
+<div class="section" id="scp-command">
+<h3>scp command<a class="headerlink" href="#scp-command" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">scp</span></code> command creates a copy of a file, or if given the <code class="docutils literal"><span class="pre">-r</span></code>
+flag a directory, on a remote machine.</p>
+<p>For example, to transfer files from INDY-linux to Cirrus (assuming you are
+logged into INDY-linux):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="n">source</span> <span class="n">user</span><span class="nd">@login</span><span class="o">.</span><span class="n">cirrus</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="p">:[</span><span class="n">destination</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>(Remember to replace <code class="docutils literal"><span class="pre">user</span></code> with your Cirrus username in the example
+above.)</p>
+<p>In the above example, the <code class="docutils literal"><span class="pre">[destination]</span></code> is optional, as when left
+out scp will simply copy the source into the user’s home directory. Also
+the <code class="docutils literal"><span class="pre">source</span></code> should be the absolute path of the file/directory being
+copied or the command should be executed in the directory containing the
+source file/directory.</p>
+<p>If you want to request a different encryption algorithm add the <code class="docutils literal"><span class="pre">-c</span>
+<span class="pre">[algorithm-name]</span></code> flag to the <code class="docutils literal"><span class="pre">scp</span></code> options. For example, to use the
+(usually faster) <em>arcfour</em> encryption algorithm you would use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="o">-</span><span class="n">c</span> <span class="n">arcfour</span> <span class="n">source</span> <span class="n">user</span><span class="nd">@login</span><span class="o">.</span><span class="n">cirrus</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="p">:[</span><span class="n">destination</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>(Remember to replace <code class="docutils literal"><span class="pre">user</span></code> with your Cirrus username in the example
+above.)</p>
+</div>
+<div class="section" id="rsync-command">
+<h3>rsync command<a class="headerlink" href="#rsync-command" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">rsync</span></code> command can also transfer data between hosts using a
+<code class="docutils literal"><span class="pre">ssh</span></code> connection. It creates a copy of a file or, if given the <code class="docutils literal"><span class="pre">-r</span></code>
+flag, a directory at the given destination, similar to scp above.</p>
+<p>Given the <code class="docutils literal"><span class="pre">-a</span></code> option rsync can also make exact copies (including
+permissions), this is referred to as <em>mirroring</em>. In this case the
+<code class="docutils literal"><span class="pre">rsync</span></code> command is executed with ssh to create the copy on a remote
+machine.</p>
+<p>To transfer files to Cirrus from INDY-linux using <code class="docutils literal"><span class="pre">rsync</span></code> (assuming you are
+logged into INDY-linx) the command should have the form:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="o">-</span><span class="n">e</span> <span class="n">ssh</span> <span class="n">source</span> <span class="n">user</span><span class="nd">@login</span><span class="o">.</span><span class="n">cirrus</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="p">:[</span><span class="n">destination</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>(Remember to replace <code class="docutils literal"><span class="pre">user</span></code> with your Cirrus username in the example
+above.)</p>
+<p>In the above example, the <code class="docutils literal"><span class="pre">[destination]</span></code> is optional, as when left
+out rsync will simply copy the source into the users home directory.
+Also the <code class="docutils literal"><span class="pre">source</span></code> should be the absolute path of the file/directory
+being copied or the command should be executed in the directory
+containing the source file/directory.</p>
+<p>Additional flags can be specified for the underlying <code class="docutils literal"><span class="pre">ssh</span></code> command by
+using a quoted string as the argument of the <code class="docutils literal"><span class="pre">-e</span></code> flag. e.g.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="p">[</span><span class="n">options</span><span class="p">]</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;ssh -c arcfour&quot;</span> <span class="n">source</span> <span class="n">user</span><span class="nd">@login</span><span class="o">.</span><span class="n">cirrus</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="p">:[</span><span class="n">destination</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>(Remember to replace <code class="docutils literal"><span class="pre">user</span></code> with your Cirrus username in the example
+above.)</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Transferring data from INDY to Cirrus</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#minimum-requirements">Minimum Requirements</a></li>
+<li><a class="reference internal" href="#data-transfer-via-ssh">Data Transfer via SSH</a><ul>
+<li><a class="reference internal" href="#ssh-transfer-performance-considerations">SSH Transfer Performance Considerations</a></li>
+<li><a class="reference internal" href="#scp-command">scp command</a></li>
+<li><a class="reference internal" href="#rsync-command">rsync command</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../software-tools/ddt.html" title="previous chapter">Debugging using Allinea DDT</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/data-management/transfer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/data-management/transfer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

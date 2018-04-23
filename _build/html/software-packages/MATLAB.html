@@ -1,0 +1,244 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>MATLAB &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NAMD" href="namd.html" />
+    <link rel="prev" title="LAMMPS" href="lammps.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="matlab">
+<h1>MATLAB<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://uk.mathworks.com">MATLAB</a> combines a desktop environment
+tuned for iterative analysis and design processes with a programming
+language that expresses matrix and array mathematics directly.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://uk.mathworks.com/help/index.html">MATLAB Documentation</a></li>
+</ul>
+</div>
+<div class="section" id="using-matlab-on-cirrus">
+<h2>Using MATLAB on Cirrus<a class="headerlink" href="#using-matlab-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p>MATLAB R2016b is available on Cirrus.</p>
+<p>This installation of MATLAB on Cirrus is covered by an Academic
+License - for use in teaching, academic research, and meeting course
+requirements at degree granting institutions only.  Not for
+government, commercial, or other organizational use.</p>
+<p><strong>If your use of MATLAB is not covered by this license then please do
+not use this installation.</strong>  Please contact the <a class="reference external" href="http://www.cirrus.ac.uk/support/">Cirrus Helpdesk</a> to arrange use of your own
+MATLAB license on Cirrus.</p>
+<p>This is MATLAB Version 9.1.0.441655 (R2016b) and provides the
+following toolboxes</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">MATLAB</span>                                   <span class="n">Version</span> <span class="mf">9.1</span>
+<span class="n">Simulink</span>                                 <span class="n">Version</span> <span class="mf">8.8</span>
+<span class="n">Bioinformatics</span> <span class="n">Toolbox</span>                   <span class="n">Version</span> <span class="mf">4.7</span>
+<span class="n">Communications</span> <span class="n">System</span> <span class="n">Toolbox</span>            <span class="n">Version</span> <span class="mf">6.3</span>
+<span class="n">Computer</span> <span class="n">Vision</span> <span class="n">System</span> <span class="n">Toolbox</span>           <span class="n">Version</span> <span class="mf">7.2</span>
+<span class="n">Control</span> <span class="n">System</span> <span class="n">Toolbox</span>                   <span class="n">Version</span> <span class="mf">10.1</span>
+<span class="n">Curve</span> <span class="n">Fitting</span> <span class="n">Toolbox</span>                    <span class="n">Version</span> <span class="mf">3.5</span><span class="o">.</span><span class="mi">4</span>
+<span class="n">DSP</span> <span class="n">System</span> <span class="n">Toolbox</span>                       <span class="n">Version</span> <span class="mf">9.3</span>
+<span class="n">Database</span> <span class="n">Toolbox</span>                         <span class="n">Version</span> <span class="mf">7.0</span>
+<span class="n">Datafeed</span> <span class="n">Toolbox</span>                         <span class="n">Version</span> <span class="mf">5.4</span>
+<span class="n">Econometrics</span> <span class="n">Toolbox</span>                     <span class="n">Version</span> <span class="mf">3.5</span>
+<span class="n">Financial</span> <span class="n">Instruments</span> <span class="n">Toolbox</span>            <span class="n">Version</span> <span class="mf">2.4</span>
+<span class="n">Financial</span> <span class="n">Toolbox</span>                        <span class="n">Version</span> <span class="mf">5.8</span>
+<span class="n">Fixed</span><span class="o">-</span><span class="n">Point</span> <span class="n">Designer</span>                     <span class="n">Version</span> <span class="mf">5.3</span>
+<span class="n">Fuzzy</span> <span class="n">Logic</span> <span class="n">Toolbox</span>                      <span class="n">Version</span> <span class="mf">2.2</span><span class="o">.</span><span class="mi">24</span>
+<span class="n">Global</span> <span class="n">Optimization</span> <span class="n">Toolbox</span>              <span class="n">Version</span> <span class="mf">3.4</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">HDL</span> <span class="n">Coder</span>                                <span class="n">Version</span> <span class="mf">3.9</span>
+<span class="n">HDL</span> <span class="n">Verifier</span>                             <span class="n">Version</span> <span class="mf">5.1</span>
+<span class="n">Image</span> <span class="n">Acquisition</span> <span class="n">Toolbox</span>                <span class="n">Version</span> <span class="mf">5.1</span>
+<span class="n">Image</span> <span class="n">Processing</span> <span class="n">Toolbox</span>                 <span class="n">Version</span> <span class="mf">9.5</span>
+<span class="n">Instrument</span> <span class="n">Control</span> <span class="n">Toolbox</span>               <span class="n">Version</span> <span class="mf">3.10</span>
+<span class="n">LTE</span> <span class="n">System</span> <span class="n">Toolbox</span>                       <span class="n">Version</span> <span class="mf">2.3</span>
+<span class="n">MATLAB</span> <span class="n">Coder</span>                             <span class="n">Version</span> <span class="mf">3.2</span>
+<span class="n">MATLAB</span> <span class="n">Compiler</span>                          <span class="n">Version</span> <span class="mf">6.3</span>
+<span class="n">MATLAB</span> <span class="n">Compiler</span> <span class="n">SDK</span>                      <span class="n">Version</span> <span class="mf">6.3</span>
+<span class="n">MATLAB</span> <span class="n">Report</span> <span class="n">Generator</span>                  <span class="n">Version</span> <span class="mf">5.1</span>
+<span class="n">Mapping</span> <span class="n">Toolbox</span>                          <span class="n">Version</span> <span class="mf">4.4</span>
+<span class="n">Neural</span> <span class="n">Network</span> <span class="n">Toolbox</span>                   <span class="n">Version</span> <span class="mf">9.1</span>
+<span class="n">Optimization</span> <span class="n">Toolbox</span>                     <span class="n">Version</span> <span class="mf">7.5</span>
+<span class="n">Parallel</span> <span class="n">Computing</span> <span class="n">Toolbox</span>               <span class="n">Version</span> <span class="mf">6.9</span>
+<span class="n">Partial</span> <span class="n">Differential</span> <span class="n">Equation</span> <span class="n">Toolbox</span>    <span class="n">Version</span> <span class="mf">2.3</span>
+<span class="n">Phased</span> <span class="n">Array</span> <span class="n">System</span> <span class="n">Toolbox</span>              <span class="n">Version</span> <span class="mf">3.3</span>
+<span class="n">RF</span> <span class="n">Toolbox</span>                               <span class="n">Version</span> <span class="mf">3.1</span>
+<span class="n">Robust</span> <span class="n">Control</span> <span class="n">Toolbox</span>                   <span class="n">Version</span> <span class="mf">6.2</span>
+<span class="n">Signal</span> <span class="n">Processing</span> <span class="n">Toolbox</span>                <span class="n">Version</span> <span class="mf">7.3</span>
+<span class="n">SimBiology</span>                               <span class="n">Version</span> <span class="mf">5.5</span>
+<span class="n">SimEvents</span>                                <span class="n">Version</span> <span class="mf">5.1</span>
+<span class="n">Simscape</span>                                 <span class="n">Version</span> <span class="mf">4.1</span>
+<span class="n">Simscape</span> <span class="n">Multibody</span>                       <span class="n">Version</span> <span class="mf">4.9</span>
+<span class="n">Simscape</span> <span class="n">Power</span> <span class="n">Systems</span>                   <span class="n">Version</span> <span class="mf">6.6</span>
+<span class="n">Simulink</span> <span class="mi">3</span><span class="n">D</span> <span class="n">Animation</span>                    <span class="n">Version</span> <span class="mf">7.6</span>
+<span class="n">Simulink</span> <span class="n">Coder</span>                           <span class="n">Version</span> <span class="mf">8.11</span>
+<span class="n">Simulink</span> <span class="n">Control</span> <span class="n">Design</span>                  <span class="n">Version</span> <span class="mf">4.4</span>
+<span class="n">Simulink</span> <span class="n">Design</span> <span class="n">Optimization</span>             <span class="n">Version</span> <span class="mf">3.1</span>
+<span class="n">Stateflow</span>                                <span class="n">Version</span> <span class="mf">8.8</span>
+<span class="n">Statistics</span> <span class="ow">and</span> <span class="n">Machine</span> <span class="n">Learning</span> <span class="n">Toolbox</span>  <span class="n">Version</span> <span class="mf">11.0</span>
+<span class="n">Symbolic</span> <span class="n">Math</span> <span class="n">Toolbox</span>                    <span class="n">Version</span> <span class="mf">7.1</span>
+<span class="n">System</span> <span class="n">Identification</span> <span class="n">Toolbox</span>            <span class="n">Version</span> <span class="mf">9.5</span>
+<span class="n">Wavelet</span> <span class="n">Toolbox</span>                          <span class="n">Version</span> <span class="mf">4.17</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-parallel-matlab-jobs">
+<h2>Running parallel MATLAB jobs<a class="headerlink" href="#running-parallel-matlab-jobs" title="Permalink to this headline">¶</a></h2>
+<p>MATLAB is intended to be used on the compute nodes within PBS job
+scripts.  Use on the login nodes should be restricted to setting
+preferences, accessing help, etc.  It is recommended that MATLAB is
+used without a GUI on the compute nodes, as the interactive response
+is slow.</p>
+<p>The license for this installation of MATLAB provides only 32 workers
+via MATLAB Distributed Computing Server (MDCS) but provides 36 workers
+via the local cluster profile (there are 36 cores on a Cirrus compute
+node), so we do not recommend the use of MDCS for parallel
+computations.</p>
+<p>MATLAB will normally use up to the total number of cores on a node for
+multi-threaded operations (e.g., matrix inversions) and for parallel
+computations.  It also makes no restriction on its memory use.  These
+features are incompatible with the shared use of nodes on Cirrus.  A
+wrapper script is provided to limit the number of cores and amount of
+memory used, in proportion to the number of CPUs selected in the PBS
+job script.  Please use this wrapper instead of using MATLAB directly.
+Select an even number of CPUs (<em>ncpus</em>) in the PBS select statement,
+since MATLAB uses the cores without Hyper-Threading (number of cores =
+<em>ncpus</em> / 2).</p>
+<p>An example job script would be</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#PBS -N Example_MATLAB_Job
+#PBS -l select=1:ncpus=12
+#PBS -l walltime=00:20:00
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+module load matlab
+
+matlab_wrapper -nodisplay &lt; /lustre/sw/cse-matlab/examples/testp.m &gt; testp.log
+</pre></div>
+</div>
+<p>This would run the <em>testp.m</em> script, without a display, and exit when
+<em>testp.m</em> has finished.  12 CPUs are selected, which correspond to 6
+cores, and the following limits would be set</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ncores</span>   <span class="o">=</span> <span class="mi">6</span>
+<span class="n">memory</span>   <span class="o">=</span> <span class="mi">42</span><span class="n">GB</span>
+
+<span class="n">Maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">computational</span> <span class="n">threads</span> <span class="p">(</span><span class="n">maxNumCompThreads</span><span class="p">)</span>          <span class="o">=</span> <span class="mi">6</span>
+<span class="n">Preferred</span> <span class="n">number</span> <span class="n">of</span> <span class="n">workers</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">parallel</span> <span class="n">pool</span> <span class="p">(</span><span class="n">PreferredNumWorkers</span><span class="p">)</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">workers</span> <span class="n">to</span> <span class="n">start</span> <span class="n">on</span> <span class="n">your</span> <span class="n">local</span> <span class="n">machine</span> <span class="p">(</span><span class="n">NumWorkers</span><span class="p">)</span>        <span class="o">=</span> <span class="mi">6</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">computational</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">use</span> <span class="n">on</span> <span class="n">each</span> <span class="n">worker</span> <span class="p">(</span><span class="n">NumThreads</span><span class="p">)</span>   <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>Note that these settings persist between MATLAB sessions but will be
+updated correctly if you use the wrapper each time.</p>
+<p><em>NumWorkers</em> and <em>NumThreads</em> can be changed (using <em>parcluster</em> and
+<em>saveProfile</em>) but <em>NumWorkers</em> * <em>NumThreads</em> should be less than
+the number of cores (<em>ncores</em> above).</p>
+<p>If you specify exclusive node access, then all the cores and memory
+will be available.  On the login nodes, a single core is used and
+memory is not limited.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">MATLAB</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-matlab-on-cirrus">Using MATLAB on Cirrus</a></li>
+<li><a class="reference internal" href="#running-parallel-matlab-jobs">Running parallel MATLAB jobs</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="lammps.html" title="previous chapter">LAMMPS</a></li>
+      <li>Next: <a href="namd.html" title="next chapter">NAMD</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/MATLAB.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/MATLAB.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

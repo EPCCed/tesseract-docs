@@ -1,0 +1,334 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>FLACS &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Gaussian" href="gaussian.html" />
+    <link rel="prev" title="CP2K" href="cp2k.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="flacs">
+<h1>FLACS<a class="headerlink" href="#flacs" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.gexcon.com/index.php?/flacs-software/article/FLACS-Overview">FLACS</a>
+from <a class="reference external" href="http://www.gexcon.com">Gexcon</a>
+is the industry standard for CFD explosion modelling and one of the best validated tools
+for modeling flammable and toxic releases in a technical safety context.</p>
+<p>The Cirrus cluster is ideally suited to run multiple FLACS simulations
+simultaneously, via its <a class="reference external" href="../user-guide/batch.html">batch system</a> PBS.
+Short lasting simulations (of typically
+up to a few hours computing time each) can be processed efficiently and you
+could get a few hundred done in a day or two.
+In contrast, the Cirrus cluster is not particularly
+suited for running single big FLACS simulations with many threads:
+each node on Cirrus has 2x4 memory channels, and for memory-bound applications
+like FLACS multi-threaded execution will not scale linearly beyond eight cores.
+On most systems, FLACS will not scale well to more than four cores (cf. the
+FLACS User’s Manual), and therefore multi-core hardware is normally best used
+by increasing the number of simulations running in parallel rather than by
+increasing the number of cores per simulation.</p>
+<p>Gexcon has two different service offerings on Cirrus: FLACS-Cloud and FLACS-HPC.
+From FLACS v10.7, FLACS-Cloud is the preferable way to exploit the HPC cluster,
+directly from the FLACS graphical user interfaces. For users who are familiar
+with accessing remote Linux HPC systems manually, FLACS-HPC may be an option.
+Both services are presented below.</p>
+<div class="section" id="flacs-cloud">
+<h2>FLACS-Cloud<a class="headerlink" href="#flacs-cloud" title="Permalink to this headline">¶</a></h2>
+<p>FLACS-Cloud is a high performance computing service available right from
+the FLACS-Risk user interface, as well as from the FLACS RunManager. It
+allows you to run FLACS simulations on the high performance cloud
+computing infrastructure of Gexcon’s partner EPCC straight from the
+graphical user interfaces of FLACS – no need to manually log in,
+transfer data, or start jobs!</p>
+<p>By using the FLACS-Cloud service, you can run a large number of
+simulations very quickly, without having to invest into in-house
+computing hardware. The FLACS-Cloud service scales to your your demand
+and facilitates running projects with rapid development cycles.</p>
+<p>The workflow for using FLACS-Cloud is described in the FLACS User’s
+Manual and in the FLACS-Risk documentation; you can also find basic
+information in the knowledge base of the
+<a class="reference external" href="https://gexcon.freshdesk.com/solution/categories/14000072843">FLACS User Portal</a>
+(accessible for FLACS license holders).</p>
+</div>
+<div class="section" id="flacs-hpc">
+<h2>FLACS-HPC<a class="headerlink" href="#flacs-hpc" title="Permalink to this headline">¶</a></h2>
+<p>Compared to FLACS-Cloud, the FLACS-HPC service is built on more
+traditional ways of accessing and using a remote Linux cluster.
+Therefore the user experience is more basic, and FLACS has to be run
+manually. For an experienced user, however, this way of exploiting
+the HPC system can be at least as efficient as FLACS-Cloud.</p>
+<p>Follow the steps below to use the FLACS-HPC facilities on Cirrus.</p>
+<p><em>Note:</em> The instructions below assume you have a valid account on Cirrus. To
+get an account please first get in touch with FLACS support at
+<a class="reference external" href="mailto:flacs&#37;&#52;&#48;gexcon&#46;com">flacs<span>&#64;</span>gexcon<span>&#46;</span>com</a> and then see the instructions in the
+<a class="reference external" href="https://tier2-safe.readthedocs.io">Tier-2 SAFE Documentation</a>.</p>
+<p><em>Note:</em> In the instructions below you should substitute “username” by
+your actual Cirrus username.</p>
+<div class="section" id="log-into-cirrus">
+<h3>Log into Cirrus<a class="headerlink" href="#log-into-cirrus" title="Permalink to this headline">¶</a></h3>
+<p>Log into Cirrus following the instructions at <a class="reference internal" href="../user-guide/connecting.html"><span class="doc">Connecting to Cirrus</span></a>.</p>
+</div>
+<div class="section" id="upload-your-data-to-cirrus">
+<h3>Upload your data to Cirrus<a class="headerlink" href="#upload-your-data-to-cirrus" title="Permalink to this headline">¶</a></h3>
+<p>Transfer your data to Cirrus by following the instructions at
+<a class="reference internal" href="../user-guide/transfer.html"><span class="doc">Data Transfer Guide</span></a>.</p>
+<p>For example, to copy the scenario definition files from the current
+directory to the folder <code class="docutils literal"><span class="pre">project_folder</span></code> in your home directory on
+Cirrus run the following command on your local machine:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="o">-</span><span class="n">avz</span> <span class="n">c</span><span class="o">*.</span><span class="n">dat3</span> <span class="n">username</span><span class="nd">@cirrus</span><span class="o">.</span><span class="n">epcc</span><span class="o">.</span><span class="n">ed</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="p">:</span><span class="n">project_folder</span>
+</pre></div>
+</div>
+<p>Note that this will preserve soft links as such; the link targets
+are not copied if they are outside the current directory.</p>
+</div>
+<div class="section" id="submit-a-flacs-job-to-the-queue">
+<h3>Submit a FLACS job to the queue<a class="headerlink" href="#submit-a-flacs-job-to-the-queue" title="Permalink to this headline">¶</a></h3>
+<p>To run FLACS on Cirrus you must first change to the directory where
+your FLACS jobs are located, use the <code class="docutils literal"><span class="pre">cd</span></code> (change directory) command for
+Linux. For example</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">projects</span><span class="o">/</span><span class="n">sim</span>
+</pre></div>
+</div>
+<p>Load the <code class="docutils literal"><span class="pre">flacs</span></code> module to make the application available:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">flacs</span>
+</pre></div>
+</div>
+<p>Submit your FLACS jobs using the <code class="docutils literal"><span class="pre">qsub</span></code> command.
+For example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">qsub</span> <span class="o">-</span><span class="n">A</span> <span class="n">xyz</span> <span class="o">-</span><span class="n">l</span> <span class="n">select</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">ncpus</span><span class="o">=</span><span class="mi">1</span> <span class="o">-</span><span class="n">l</span> <span class="n">walltime</span><span class="o">=</span><span class="mi">6</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="o">-</span><span class="n">q</span> <span class="n">flacs</span> <span class="o">--</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">sw</span><span class="o">/</span><span class="n">flacs</span><span class="o">/</span><span class="mf">10.5</span><span class="o">.</span><span class="mi">1</span><span class="o">/</span><span class="n">FLACS_v10</span><span class="o">.</span><span class="mi">5</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">run_runflacs</span> <span class="o">-</span><span class="nb">dir</span> <span class="n">projects</span><span class="o">/</span><span class="n">sim</span> <span class="mi">010101</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">-A</span> <span class="pre">xyz</span></code> option is obligatory and states the account <code class="docutils literal"><span class="pre">xyz</span></code>
+that the CPU consumption will be billed to. You can check your
+account in SAFE.</p>
+<p>The <code class="docutils literal"><span class="pre">-l</span> <span class="pre">select=x:ncpus=y</span></code> option specifies the resource allocation for
+the job you are starting. The parameter <code class="docutils literal"><span class="pre">x</span></code> is the number of nodes
+required and the parameter <code class="docutils literal"><span class="pre">y</span></code> is the number of cores required. For
+a serial FLACS job you would use <code class="docutils literal"><span class="pre">-l</span> <span class="pre">select=1:ncpus=1</span></code></p>
+<p>The maximum length of time (i.e. walltime) you want the job to run
+is specified with the <code class="docutils literal"><span class="pre">-l</span> <span class="pre">walltime=[hh:mm:ss]</span></code> option. After this
+time, your job will be stopped by the job scheduler. Setting a very
+high walltime limit may lead to your job being given lower priority
+and thus wait longer in the queue. The default walltime is 12 hours.</p>
+<p>All Flacs jobs must be submitted to the flacs queue using the option
+<code class="docutils literal"><span class="pre">-q</span> <span class="pre">flacs</span></code>; the flacs queue ensures FLACS licenses are provisioned
+correctly for the jobs.</p>
+<p>After the <code class="docutils literal"><span class="pre">--</span></code> which marks the beginning of the command to run, the
+Flacs executable is given <em>with its absolute path</em>.
+Having loaded the flacs module (see above) you can find the location
+by</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">which</span> <span class="n">run_runflacs</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">run_runflacs</span></code> command in turn needs two arguments: first, after
+<code class="docutils literal"><span class="pre">-dir</span></code>, the directory where to run the job and create the output; if
+it is the current directory then you can pass <code class="docutils literal"><span class="pre">-dir</span> <span class="pre">`pwd`</span></code>.
+Second, the job number of the FLACS scenario.</p>
+</div>
+<div class="section" id="submit-flacs-jobs-from-a-script">
+<h3>Submit FLACS jobs from a script<a class="headerlink" href="#submit-flacs-jobs-from-a-script" title="Permalink to this headline">¶</a></h3>
+<p>In your script, change to the directory with the job files and load the flacs
+module as explained above.</p>
+<p>When submitting several jobs it is advisable to add the <code class="docutils literal"><span class="pre">-N</span> <span class="pre">name</span></code>
+option to the <code class="docutils literal"><span class="pre">qsub</span></code> command, with the FLACS job number being part
+of the first ten characters of the name. In this way you can easily
+identify the jobs in the queue (see below).</p>
+<p>During testing it has been shown that job submission to the queue runs
+more smoothly when there is a short delay of 5 seconds before subsequent
+<code class="docutils literal"><span class="pre">qsub</span></code> commands.</p>
+<p>A script submitting the scenarios 000012, 000023 and 000117 to the queue
+could look like this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>module load flacs/10.5.1
+sleep 5; qsub -A xyz -l select=1:ncpus=1 -l walltime=24:00:00 -N f-000012 -q flacs -V -- `which run_runflacs` -dir `pwd` 000012
+sleep 5; qsub -A xyz -l select=1:ncpus=1 -l walltime=24:00:00 -N f-000023 -q flacs -V -- `which run_runflacs` -dir `pwd` 000023
+sleep 5; qsub -A xyz -l select=1:ncpus=1 -l walltime=24:00:00 -N f-000117 -q flacs -V -- `which run_runflacs` -dir `pwd` 000117
+</pre></div>
+</div>
+<p>This is also easy to formulate as a loop.</p>
+</div>
+<div class="section" id="monitor-your-jobs">
+<h3>Monitor your jobs<a class="headerlink" href="#monitor-your-jobs" title="Permalink to this headline">¶</a></h3>
+<p>You can monitor the progress of your jobs with the <code class="docutils literal"><span class="pre">qstat</span></code> command.
+This will list all jobs that are running or queued on the system. To list
+only your jobs use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">qstat</span> <span class="o">-</span><span class="n">u</span> <span class="n">username</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="submitting-many-flacs-jobs-as-a-job-array">
+<h3>Submitting many FLACS jobs as a job array<a class="headerlink" href="#submitting-many-flacs-jobs-as-a-job-array" title="Permalink to this headline">¶</a></h3>
+<p>Running many related scenarios with the Flacs simulator is ideally suited for
+using <a class="reference external" href="../user-guide/batch.html#job-arrays">job arrays</a>, i.e. running the
+simulations as part of a single job.</p>
+<p>A job script for running a job array with 128 Flacs scenarios that are located in
+the current directory could look like this:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+#PBS -l select=1:ncpus=1
+#PBS -N disp2
+#PBS -J 1-128
+#PBS -j oe
+#PBS -l walltime=48:00:00
+#PBS -q flacs
+#PBS -V
+
+cd ${PBS_O_WORKDIR}
+
+CS_FILES=(`ls -1 cs??????.dat3`)
+# NR_OF_JOBS=${#CS_FILES[@]}
+JOB_FIRST=1
+JOB_LAST=128
+for (( i=0; i&lt;$(expr ${JOB_LAST} - ${JOB_FIRST}); i++ ));
+do
+  JOB_IDS[${i}]=${CS_FILES[$(expr $i + ${JOB_FIRST})]:2:6}
+done
+
+module load flacs
+JOB_INDEX=$(( $PBS_ARRAY_INDEX - 1 ))
+
+`which run_runflacs` ${JOB_IDS[${JOB_INDEX}]}
+</pre></div>
+</div>
+<p>Due to the way the job scheduler interprets this script, the number
+of jobs has to be hard-coded in the first (non-bash) part of the job
+script and cannot be determined based on the number of scenarios in
+the current directory.</p>
+</div>
+<div class="section" id="transfer-data-from-cirrus-to-your-local-system">
+<h3>Transfer data from Cirrus to your local system<a class="headerlink" href="#transfer-data-from-cirrus-to-your-local-system" title="Permalink to this headline">¶</a></h3>
+<p>After your simulations are finished, transfer the data back from Cirrus
+following the instructions at <a class="reference internal" href="../user-guide/transfer.html"><span class="doc">Data Transfer Guide</span></a>.</p>
+<p>For example, to copy the result files from the directory <code class="docutils literal"><span class="pre">project_folder</span></code>
+in your home directory on Cirrus to the folder <code class="docutils literal"><span class="pre">/tmp</span></code> on your local
+machine use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="o">-</span><span class="n">rvz</span> <span class="o">--</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;r[13t]*.*&#39;</span> <span class="o">--</span><span class="n">exclude</span><span class="o">=</span><span class="s1">&#39;*&#39;</span> <span class="n">username</span><span class="nd">@cirrus</span><span class="o">.</span><span class="n">epcc</span><span class="o">.</span><span class="n">ed</span><span class="o">.</span><span class="n">ac</span><span class="o">.</span><span class="n">uk</span><span class="p">:</span><span class="n">project_folder</span><span class="o">/</span> <span class="o">/</span><span class="n">tmp</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="billing-for-flacs-hpc-use-on-cirrus">
+<h3>Billing for FLACS-HPC use on Cirrus<a class="headerlink" href="#billing-for-flacs-hpc-use-on-cirrus" title="Permalink to this headline">¶</a></h3>
+<p>CPU time on Cirrus is measured in CPUh for each job run on a compute node,
+based on the number of physical cores employed.
+Only jobs submitted to compute nodes via <code class="docutils literal"><span class="pre">qsub</span></code> are charged. Any
+processing on a login node is not charged.
+However, using login nodes for computations other than simple pre- or post-
+processing is strongly discouraged.</p>
+<p>Gexcon normally bills monthly for the use of FLACS-Cloud and FLACS-HPC,
+based on the Cirrus CPU usage logging.</p>
+</div>
+</div>
+<div class="section" id="getting-help">
+<h2>Getting help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
+<p>Get in touch with FLACS Support by email to <a class="reference external" href="mailto:flacs&#37;&#52;&#48;gexcon&#46;com">flacs<span>&#64;</span>gexcon<span>&#46;</span>com</a> if you
+encounter any problems. For issues related to Cirrus rather than
+FLACS contact the <a class="reference external" href="http://www.cirrus.ac.uk/support/">Cirrus helpdesk</a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FLACS</a><ul>
+<li><a class="reference internal" href="#flacs-cloud">FLACS-Cloud</a></li>
+<li><a class="reference internal" href="#flacs-hpc">FLACS-HPC</a><ul>
+<li><a class="reference internal" href="#log-into-cirrus">Log into Cirrus</a></li>
+<li><a class="reference internal" href="#upload-your-data-to-cirrus">Upload your data to Cirrus</a></li>
+<li><a class="reference internal" href="#submit-a-flacs-job-to-the-queue">Submit a FLACS job to the queue</a></li>
+<li><a class="reference internal" href="#submit-flacs-jobs-from-a-script">Submit FLACS jobs from a script</a></li>
+<li><a class="reference internal" href="#monitor-your-jobs">Monitor your jobs</a></li>
+<li><a class="reference internal" href="#submitting-many-flacs-jobs-as-a-job-array">Submitting many FLACS jobs as a job array</a></li>
+<li><a class="reference internal" href="#transfer-data-from-cirrus-to-your-local-system">Transfer data from Cirrus to your local system</a></li>
+<li><a class="reference internal" href="#billing-for-flacs-hpc-use-on-cirrus">Billing for FLACS-HPC use on Cirrus</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-help">Getting help</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="cp2k.html" title="previous chapter">CP2K</a></li>
+      <li>Next: <a href="gaussian.html" title="next chapter">Gaussian</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/flacs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/flacs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

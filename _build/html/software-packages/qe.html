@@ -1,0 +1,159 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Quantum Espresso (QE) &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="STAR-CCM+" href="starccm+.html" />
+    <link rel="prev" title="OpenFOAM" href="openfoam.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quantum-espresso-qe">
+<h1>Quantum Espresso (QE)<a class="headerlink" href="#quantum-espresso-qe" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.quantum-espresso.org/">Quantum Espresso</a> is an integrated suite of
+Open-Source computer codes for electronic-structure calculations and materials
+modeling at the nanoscale. It is based on density-functional theory, plane waves,
+and pseudopotentials.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.quantum-espresso.org/users-manual/">QE User Guides</a></li>
+<li><a class="reference external" href="http://www.quantum-espresso.org/tutorials/">QE Tutorials</a></li>
+</ul>
+</div>
+<div class="section" id="using-qe-on-cirrus">
+<h2>Using QE on Cirrus<a class="headerlink" href="#using-qe-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p>QE is Open Source software and is freely available to all Cirrus users.</p>
+</div>
+<div class="section" id="running-parallel-qe-jobs">
+<h2>Running parallel QE jobs<a class="headerlink" href="#running-parallel-qe-jobs" title="Permalink to this headline">¶</a></h2>
+<p>QE can exploit multiple nodes on Cirrus and will generally be run in
+exclusive mode over more than one node.</p>
+<p>For example, the following script will run a QE pw.x job using 4 nodes
+(144 cores).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N pw_test
+#PBS -l select=4:ncpus=72
+# Make sure you are not sharing nodes with other users
+#PBS -l place=excl
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load QE and MPI modules
+module load qe
+module load mpt
+
+# Run using input in test_calc.in
+# Note: &#39;-ppn 36&#39; is required to use all physical cores across
+# nodes as hyperthreading is enabled by default
+mpiexec_mpt -n 144 -ppn 36 pw.x test_calc.in
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quantum Espresso (QE)</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-qe-on-cirrus">Using QE on Cirrus</a></li>
+<li><a class="reference internal" href="#running-parallel-qe-jobs">Running parallel QE jobs</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="openfoam.html" title="previous chapter">OpenFOAM</a></li>
+      <li>Next: <a href="starccm+.html" title="next chapter">STAR-CCM+</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/qe.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/qe.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

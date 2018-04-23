@@ -1,0 +1,197 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HELYX® &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LAMMPS" href="lammps.html" />
+    <link rel="prev" title="GROMACS" href="gromacs.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="helyx">
+<h1>HELYX®<a class="headerlink" href="#helyx" title="Permalink to this headline">¶</a></h1>
+<p>HELYX is a comprehensive, general-purpose computational fluid dynamics (CFD) software
+package for engineering analysis and design optimisation developed by ENGYS. The package
+features an advanced open-source CFD simulation engine and a client-server GUI to provide
+a flexible and cost-effective HPC solver platform for enterprise applications.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Information about HELYX</li>
+<li>Information about ENGYS</li>
+</ul>
+</div>
+<div class="section" id="using-helyx-on-cirrus">
+<h2>Using HELYX on Cirrus<a class="headerlink" href="#using-helyx-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p>HELYX is only available on Cirrus to authorised users with a valid license to use the software.
+For any queries regarding HELYX on Cirrus, please contact ENGYS or the Cirrus Helpdesk.</p>
+<p>HELYX applications can be run on Cirrus in two ways:</p>
+<ul class="simple">
+<li>Manually from the command line, using a SSH terminal to access the cluster’s master node.</li>
+<li>Interactively from within the GUI, using the dedicated client-server node to connect remotely to the cluster.</li>
+</ul>
+<p>A complete user’s guide to access HELYX on demand via Cirrus is provided by ENGYS as part of the service offering.</p>
+</div>
+<div class="section" id="running-parallel-helyx-jobs">
+<h2>Running Parallel HELYX Jobs<a class="headerlink" href="#running-parallel-helyx-jobs" title="Permalink to this headline">¶</a></h2>
+<p>The standard execution of HELYX applications on Cirrus is handled through the command line using a submission
+script to control PBSPro. A basic submission script for running multiple HELYX applications in parallel using
+the SGI-MPT (Message Passing Toolkit) module is included below. In this example the applications
+helyxHexMesh and caseSetup are run sequentially in 144 cores.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N HELYX_MPI_Job
+#PBS -l select=4:ncpus=72
+#PBS -l place=excl
+#PBS -l walltime=00:20:00
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load any required modules
+module load mpt/2.14
+module load gcc/6.2.0
+
+# Load HELYX-Core environment
+export FOAM_INST_DIR=/lustre/home/y07/helyx/v3.0.2/CORE
+. /lustre/home/y07/helyx/v3.0.2/CORE/HELYXcore-3.0.2/etc/bashrc
+
+# Set the number of threads to 1
+export OMP_NUM_THREADS=1
+
+# Launch HELYX applications in parallel
+export myoptions=&quot;-parallel&quot;
+jobs=&quot;helyxHexMesh caseSetup&quot;
+
+for job in `echo $jobs`
+do
+
+case &quot;$job&quot; in
+   *                )   options=&quot;$myoptions&quot; ;;
+esac
+
+mpiexec_mpt -n 144 -ppn 36 $job $myoptions 2&gt;&amp;1 | tee log/$job.$PBS_JOBID.out
+
+done
+</pre></div>
+</div>
+<p>Alternatively, the user can execute most HELYX applications on Cirrus interactively via the GUI by following these simple steps:</p>
+<ol class="arabic simple">
+<li>Launch HELYX GUI in the local Windows or Linux machine.</li>
+<li>Create a client-server connection to Cirrus using the dedicated node provided for this service.
+Enter the user login details and the total number of processors to be employed in the cluster
+for parallel execution.</li>
+<li>Use the GUI in the local machine to access the remote file system in Cirrus to load a geometry,
+create a computational grid, set up a simulation, solve the flow, and post-process the results
+using the HPC resources available in the cluster. The scheduling associated with every HELYX job
+is handled automatically by the client-server.</li>
+<li>Visualise the remote data from the local machine, perform changes in the model, and complete as
+many flow simulations in Cirrus as required. Disconnect the client-server at any point during
+execution, leave the solver running in the cluster, and resume the connection to Cirrus from
+another client machine to reload an existing case when needed.</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HELYX®</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-helyx-on-cirrus">Using HELYX on Cirrus</a></li>
+<li><a class="reference internal" href="#running-parallel-helyx-jobs">Running Parallel HELYX Jobs</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="gromacs.html" title="previous chapter">GROMACS</a></li>
+      <li>Next: <a href="lammps.html" title="next chapter">LAMMPS</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/helyx.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/helyx.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

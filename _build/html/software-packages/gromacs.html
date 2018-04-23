@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>GROMACS &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="HELYX®" href="helyx.html" />
+    <link rel="prev" title="Gaussian" href="gaussian.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="gromacs">
+<h1>GROMACS<a class="headerlink" href="#gromacs" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.gromacs.org/">GROMACS</a> GROMACS is a versatile package to
+perform molecular dynamics, i.e. simulate the Newtonian equations of
+motion for systems with hundreds to millions of particles.  It is
+primarily designed for biochemical molecules like proteins, lipids
+and nucleic acids that have a lot of complicated bonded interactions,
+but since GROMACS is extremely fast at calculating the nonbonded
+interactions (that usually dominate simulations) many groups are
+also using it for research on non-biological systems, e.g. polymers.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://manual.gromacs.org/documentation/">GROMACS User Guides</a></li>
+<li><a class="reference external" href="http://www.gromacs.org/Documentation/Tutorials">GROMACS Tutorials</a></li>
+</ul>
+</div>
+<div class="section" id="using-gromacs-on-cirrus">
+<h2>Using GROMACS on Cirrus<a class="headerlink" href="#using-gromacs-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p>GROMACS is Open Source software and is freely available to all Cirrus users.
+Four versions are available:</p>
+<ul class="simple">
+<li>Serial/shared memory, single precision: gmx</li>
+<li>Serial/shared memory, double precision: gmx_d</li>
+<li>Parallel MPI/OpenMP, single precision: gmx_mpi</li>
+<li>Parallel MPI/OpenMP, double precision: gmx_mpi_d</li>
+</ul>
+</div>
+<div class="section" id="running-parallel-gromacs-jobs-pure-mpi">
+<h2>Running parallel GROMACS jobs: pure MPI<a class="headerlink" href="#running-parallel-gromacs-jobs-pure-mpi" title="Permalink to this headline">¶</a></h2>
+<p>GROMACS can exploit multiple nodes on Cirrus and will generally be run in
+exclusive mode over more than one node.</p>
+<p>For example, the following script will run a GROMACS MD job using 4 nodes
+(144 cores) with pure MPI.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N mdrun_test
+#PBS -l select=4:ncpus=72
+# Make sure you are not sharing nodes with other users
+#PBS -l place=excl
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load GROMACS and MPI modules
+module load gromacs
+module load mpt
+
+# Run using input in test_calc.tpr
+# Note: &#39;-ppn 36&#39; is required to use all physical cores across
+# nodes as hyperthreading is enabled by default
+mpiexec_mpt -n 144 -ppn 36 gmx_mpi mdrun -s test_calc.tpr
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-parallel-gromacs-jobs-hybrid-mpi-openmp">
+<h2>Running parallel GROMACS jobs: hybrid MPI/OpenMP<a class="headerlink" href="#running-parallel-gromacs-jobs-hybrid-mpi-openmp" title="Permalink to this headline">¶</a></h2>
+<p>The following script will run a GROMACS MD job using 4 nodes
+(144 cores) with 6 MPI processes per node (24 MPI processes in
+total) and 6 OpenMP threads per MPI process.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N mdrun_test
+#PBS -l select=4:ncpus=72
+# Make sure you are not sharing nodes with other users
+#PBS -l place=excl
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load GROMACS and MPI modules
+module load gromacs
+module load mpt
+
+# Run using input in test_calc.tpr
+export OMP_NUM_THREADS=6
+mpiexec_mpt -n 24 -ppn 6 omplace -nt 6 gmx_mpi mdrun -s test_calc.tpr
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">GROMACS</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-gromacs-on-cirrus">Using GROMACS on Cirrus</a></li>
+<li><a class="reference internal" href="#running-parallel-gromacs-jobs-pure-mpi">Running parallel GROMACS jobs: pure MPI</a></li>
+<li><a class="reference internal" href="#running-parallel-gromacs-jobs-hybrid-mpi-openmp">Running parallel GROMACS jobs: hybrid MPI/OpenMP</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="gaussian.html" title="previous chapter">Gaussian</a></li>
+      <li>Next: <a href="helyx.html" title="next chapter">HELYX®</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/gromacs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/gromacs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

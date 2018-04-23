@@ -1,0 +1,331 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Cirrus &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="user-guide/introduction.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <img alt="_images/epcc_uoe_epsrc.png" class="align-right" src="_images/epcc_uoe_epsrc.png" />
+<div class="section" id="cirrus">
+<h1>Cirrus<a class="headerlink" href="#cirrus" title="Permalink to this headline">¶</a></h1>
+<p>Cirrus is a HPC and data science service hosted and run by <a class="reference external" href="http://www.epcc.ed.ac.uk">EPCC</a> at
+<a class="reference external" href="http://www.ed.ac.uk">The University of Edinburgh</a>. It is one of the <a class="reference external" href="http://www.epsrc.ac.uk">EPSRC</a>
+Tier-2 National HPC Services.</p>
+<p>Cirrus is available to industry, commerce and academic researchers. For information on how
+to get access to the system please see the <a class="reference external" href="http://www.cirrus.ac.uk">Cirrus website</a>.</p>
+<p>The Cirrus facility is based around an SGI ICE XA system with 10,080 cores. There are 280 compute
+nodes, each with 256 GB of memory, connected together by a single Infiniband fabric. Each node
+contains two 2.1 GHz, 18-core Intel Xeon processors, and all nodes access the 406 TiB Lustre file system.</p>
+<p>This documentation covers:</p>
+<ul class="simple">
+<li>Cirrus User Guide: general information on how to use Cirrus</li>
+<li>Software Applications: notes on using specific software applications on Cirrus</li>
+<li>Software Libraries: notes on compiling against specific libraries on Cirrus. Most
+libraries work <em>as expected</em> so no additional notes are required however a small number require specific
+documentation</li>
+<li>Software Tools: Information on using tools such as debuggers and profilers on Cirrus</li>
+</ul>
+<p>Information on using the SAFE web interface for managing and reporting on your usage on
+Cirrus can be found on the <a class="reference external" href="http://tier2-safe.readthedocs.io/en/latest/">Tier-2 SAFE Documentation</a></p>
+<p>This documentation draws on the <a class="reference external" href="https://github.com/rcgsheffield/sheffield_hpc">Sheffield Iceberg Documentation</a>
+and the documentation for the <a class="reference external" href="http://www.archer.ac.uk">ARCHER National Supercomputing Service</a>.</p>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Cirrus User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/introduction.html#acknowledging-cirrus">Acknowledging Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/introduction.html#hardware">Hardware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/introduction.html#useful-terminology">Useful terminology</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/connecting.html">Connecting to Cirrus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/connecting.html#interactive-access">Interactive access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/connecting.html#ssh-clients">SSH Clients</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/connecting.html#making-access-more-convenient-using-a-ssh-agent">Making access more convenient using a SSH Agent</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/transfer.html">Data Transfer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/transfer.html#scp-command">scp command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/transfer.html#rsync-command">rsync command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/transfer.html#performance-considerations">Performance considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/resource_management.html">File and Resource Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/resource_management.html#the-cirrus-administration-web-site-safe">The Cirrus Administration Web Site (SAFE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/resource_management.html#checking-your-cpu-time-allocation">Checking your CPU-time allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/resource_management.html#disk-quotas">Disk quotas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/resource_management.html#file-permissions-and-security">File permissions and security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/resource_management.html#file-io-performance-guidelines">File IO Performance Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/resource_management.html#backup-policies">Backup policies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/development.html">Application Development Environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/development.html#using-the-modules-environment">Using the modules environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/development.html#available-compiler-suites">Available Compiler Suites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/development.html#compiling-mpi-codes">Compiling MPI codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/development.html#compiler-information-and-options">Compiler Information and Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/development.html#using-static-linking-libraries">Using static linking/libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/batch.html">Running Jobs on Cirrus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#using-pbs-pro">Using PBS Pro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#queue-limits">Queue Limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#output-from-pbs-jobs">Output from PBS jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#running-parallel-jobs">Running Parallel Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#running-mpi-parallel-jobs">Running MPI parallel jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#example-parallel-mpi-job-submission-scripts">Example parallel MPI job submission scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#serial-jobs">Serial Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#job-arrays">Job arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#interactive-jobs">Interactive Jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/batch.html#reservations">Reservations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/singularity.html">Singularity Containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/singularity.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/singularity.html#about-singularity-containers-images">About Singularity Containers (Images)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/singularity.html#using-singularity-images-on-cirrus">Using Singularity Images on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/singularity.html#creating-your-own-singularity-images">Creating Your Own Singularity Images</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/python.html">Using Python</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/python.html#accessing-central-anaconda-python">Accessing central Anaconda Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/python.html#custom-environments">Custom Environments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide/reading.html">References and further reading</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/reading.html#online-documentation-and-resources">Online Documentation and Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/reading.html#mpi-programming">MPI programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/reading.html#openmp-programming">OpenMP programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/reading.html#parallel-programming">Parallel programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/reading.html#programming-languages">Programming languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide/reading.html#programming-skills">Programming skills</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Software Applications</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/altair_hw.html">Altair Hyperworks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/altair_hw.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/altair_hw.html#using-hyperworks-on-cirrus">Using Hyperworks on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/altair_hw.html#running-serial-hyperworks-jobs">Running serial Hyperworks jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/altair_hw.html#running-parallel-hyperworks-jobs">Running parallel Hyperworks jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/Ansys.html">ANSYS Fluent</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/Ansys.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/Ansys.html#using-ansys-fluent-on-cirrus">Using ANSYS Fluent on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/Ansys.html#running-parallel-ansys-fluent-jobs">Running parallel ANSYS Fluent jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/Ansys.html#actual-fluent-script-inputfile-fl">Actual Fluent script (“inputfile.fl”):</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/castep.html">CASTEP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/castep.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/castep.html#using-castep-on-cirrus">Using CASTEP on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/castep.html#running-parallel-castep-jobs">Running parallel CASTEP jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/cp2k.html">CP2K</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/cp2k.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/cp2k.html#using-cp2k-on-cirrus">Using CP2K on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/cp2k.html#running-parallel-cp2k-jobs-mpi-only">Running parallel CP2K jobs - MPI Only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/cp2k.html#running-parallel-cp2k-jobs-mpi-openmp-hybrid-mode">Running Parallel CP2K Jobs - MPI/OpenMP Hybrid Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/flacs.html">FLACS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/flacs.html#flacs-cloud">FLACS-Cloud</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/flacs.html#flacs-hpc">FLACS-HPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/flacs.html#getting-help">Getting help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/gaussian.html">Gaussian</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gaussian.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gaussian.html#using-gaussian-on-cirrus">Using Gaussian on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gaussian.html#scratch-directories">Scratch Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gaussian.html#running-serial-gaussian-jobs">Running serial Gaussian jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gaussian.html#running-parallel-gaussian-jobs">Running parallel Gaussian jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/gromacs.html">GROMACS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gromacs.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gromacs.html#using-gromacs-on-cirrus">Using GROMACS on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gromacs.html#running-parallel-gromacs-jobs-pure-mpi">Running parallel GROMACS jobs: pure MPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/gromacs.html#running-parallel-gromacs-jobs-hybrid-mpi-openmp">Running parallel GROMACS jobs: hybrid MPI/OpenMP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/helyx.html">HELYX®</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/helyx.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/helyx.html#using-helyx-on-cirrus">Using HELYX on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/helyx.html#running-parallel-helyx-jobs">Running Parallel HELYX Jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/lammps.html">LAMMPS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/lammps.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/lammps.html#using-lammps-on-cirrus">Using LAMMPS on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/lammps.html#running-parallel-lammps-jobs">Running parallel LAMMPS jobs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/lammps.html#compiling-lammps-on-cirrus">Compiling LAMMPS on Cirrus</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/MATLAB.html">MATLAB</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/MATLAB.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/MATLAB.html#using-matlab-on-cirrus">Using MATLAB on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/MATLAB.html#running-parallel-matlab-jobs">Running parallel MATLAB jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/namd.html">NAMD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/namd.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/namd.html#using-namd-on-cirrus">Using NAMD on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/namd.html#running-parallel-namd-jobs">Running parallel NAMD jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/openfoam.html">OpenFOAM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/openfoam.html#available-versions">Available Versions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/openfoam.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/openfoam.html#using-openfoam-on-cirrus">Using OpenFOAM on Cirrus</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/qe.html">Quantum Espresso (QE)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/qe.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/qe.html#using-qe-on-cirrus">Using QE on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/qe.html#running-parallel-qe-jobs">Running parallel QE jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/starccm+.html">STAR-CCM+</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/starccm+.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/starccm+.html#using-star-ccm-on-cirrus">Using STAR-CCM+ on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/starccm+.html#licensing">Licensing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software-packages/vasp.html">VASP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/vasp.html#useful-links">Useful Links</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/vasp.html#using-vasp-on-cirrus">Using VASP on Cirrus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-packages/vasp.html#running-parallel-vasp-jobs">Running parallel VASP jobs</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Software Libraries</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="software-libraries/intel_mkl.html">Intel MKL: BLAS, LAPACK, ScaLAPACK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-libraries/intel_mkl.html#intel-compilers">Intel Compilers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-libraries/intel_mkl.html#gnu-compiler">GNU Compiler</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Software Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="software-tools/ddt.html">Debugging using Allinea DDT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="software-tools/ddt.html#debugging-runs-on-the-login-nodes">Debugging runs on the login nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-tools/ddt.html#debugging-runs-on-the-compute-nodes">Debugging runs on the compute nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-tools/ddt.html#memory-debugging-with-ddt">Memory debugging with DDT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-tools/ddt.html#getting-further-help-on-ddt">Getting further help on DDT</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Data Management Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data-management/transfer.html">Transferring data from INDY to Cirrus</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="data-management/transfer.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-management/transfer.html#minimum-requirements">Minimum Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data-management/transfer.html#data-transfer-via-ssh">Data Transfer via SSH</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="user-guide/introduction.html" title="next chapter">Introduction</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

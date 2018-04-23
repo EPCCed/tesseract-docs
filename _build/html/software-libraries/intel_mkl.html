@@ -1,0 +1,203 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Intel MKL: BLAS, LAPACK, ScaLAPACK &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Debugging using Allinea DDT" href="../software-tools/ddt.html" />
+    <link rel="prev" title="VASP" href="../software-packages/vasp.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="intel-mkl-blas-lapack-scalapack">
+<h1>Intel MKL: BLAS, LAPACK, ScaLAPACK<a class="headerlink" href="#intel-mkl-blas-lapack-scalapack" title="Permalink to this headline">¶</a></h1>
+<p>The Intel MKL libraries contain a variety of optimised numerical libraries
+including BLAS, LAPACK, and ScaLAPACK.</p>
+<div class="section" id="intel-compilers">
+<h2>Intel Compilers<a class="headerlink" href="#intel-compilers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="blas-and-lapack">
+<h3>BLAS and LAPACK<a class="headerlink" href="#blas-and-lapack" title="Permalink to this headline">¶</a></h3>
+<p>To use MKL libraries with the Intel compilers you first need to load the Intel
+compiler module and the Intel tools module:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">intel</span><span class="o">-</span><span class="n">compilers</span><span class="o">-</span><span class="mi">17</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">intel</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mi">17</span>
+</pre></div>
+</div>
+<p>To include MKL you specify the <code class="docutils literal"><span class="pre">-mkl</span></code> option on your compile and link lines.
+For example, to compile a single source file, Fortran program with MKL you could use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">ifort</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">mkl</span> <span class="o">-</span><span class="n">o</span> <span class="n">lapack_prb</span><span class="o">.</span><span class="n">o</span> <span class="n">lapack_prb</span><span class="o">.</span><span class="n">f90</span>
+<span class="n">ifort</span> <span class="o">-</span><span class="n">mkl</span> <span class="o">-</span><span class="n">o</span> <span class="n">lapack_prb</span><span class="o">.</span><span class="n">x</span> <span class="n">lapack_prb</span><span class="o">.</span><span class="n">o</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">-mkl</span></code> flag without any options builds against the threaded version of MKL.
+If you wish to build against the serial version of MKL, you would use
+<code class="docutils literal"><span class="pre">-mkl=sequential</span></code>.</p>
+</div>
+<div class="section" id="scalapack">
+<h3>ScaLAPACK<a class="headerlink" href="#scalapack" title="Permalink to this headline">¶</a></h3>
+<p>The distributed memory linear algebra routines in ScaLAPACK require MPI in addition
+to the compilers and MKL libraries. On Cirrus, this is usually provided by SGI MPT.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">intel</span><span class="o">-</span><span class="n">compilers</span><span class="o">-</span><span class="mi">17</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">intel</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mi">17</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">mpt</span>
+</pre></div>
+</div>
+<p>Once you have the modules loaded you need to use the SGI versions of BLACS
+at link time to include ScaLAPACK. Remember to use the MPI versions of
+the compilers:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>mpif90 -c -o linsolve.o linsolve.f90
+mpif90 -o linsolve.x linsolve.o -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_sgimpt_lp64 -lpthread -lm -ldl
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="gnu-compiler">
+<h2>GNU Compiler<a class="headerlink" href="#gnu-compiler" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>BLAS and LAPACK<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>To use MKL libraries with the GNU compiler you first need to load the GNU compiler module
+and Intel tools module:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">gcc</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">intel</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mi">16</span>
+</pre></div>
+</div>
+<p>To include MKL you need to explicitly link against the MKL libraries.
+For example, to compile a single source file, Fortran program with MKL you could use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>gfortran -c -o lapack_prb.o lapack_prb.f90
+gfortran -o lapack_prb.x lapack_prb.o -L$MKLROOT/lib/intel64 -lmkl_gf_lp64 -lmkl_core -lmkl_sequential
+</pre></div>
+</div>
+<p>This will build against the serial version of MKL, to build against the threaded version use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>gfortran -c -o lapack_prb.o lapack_prb.f90
+gfortran -fopenmp -o lapack_prb.x lapack_prb.o -L$MKLROOT/lib/intel64 -lmkl_gf_lp64 -lmkl_core -lmkl_gnu_thread
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>ScaLAPACK<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>The distributed memory linear algebra routines in ScaLAPACK require MPI in addition
+to the compilers and MKL libraries. On Cirrus, this is usually provided by SGI MPT.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">gcc</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">intel</span><span class="o">-</span><span class="n">tools</span><span class="o">-</span><span class="mi">16</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">mpt</span>
+</pre></div>
+</div>
+<p>Once you have the modules loaded you need to link against two additional libraries to include ScaLAPACK.
+Remember to use the MPI versions of the compilers:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>mpif90 -f90=gfortran -c -o linsolve.o linsolve.f90
+mpif90 -f90=gfortran -o linsolve.x linsolve.o -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_sgimpt_lp64 -lpthread -lm -ldl
+</pre></div>
+</div>
+</div>
+<div class="section" id="ilp-vs-lp-libraries">
+<h3>ILP vs LP libraries<a class="headerlink" href="#ilp-vs-lp-libraries" title="Permalink to this headline">¶</a></h3>
+<p>If you look in the <em>$MKLROOT/lib/intel64</em> directory then you will see ILP and LP libraries, in the above we were linking against the LP libraries and you can choose either. ILP use a 64 bit integer type, whereas LP use a 32 bit integer type. For very large arrays then ILP is the best choice (as it can index far more data), but there are some limitations. For more information <a class="reference external" href="https://software.intel.com/en-us/node/528682">see the Intel documentation here</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Intel MKL: BLAS, LAPACK, ScaLAPACK</a><ul>
+<li><a class="reference internal" href="#intel-compilers">Intel Compilers</a><ul>
+<li><a class="reference internal" href="#blas-and-lapack">BLAS and LAPACK</a></li>
+<li><a class="reference internal" href="#scalapack">ScaLAPACK</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#gnu-compiler">GNU Compiler</a><ul>
+<li><a class="reference internal" href="#id1">BLAS and LAPACK</a></li>
+<li><a class="reference internal" href="#id2">ScaLAPACK</a></li>
+<li><a class="reference internal" href="#ilp-vs-lp-libraries">ILP vs LP libraries</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../software-packages/vasp.html" title="previous chapter">VASP</a></li>
+      <li>Next: <a href="../software-tools/ddt.html" title="next chapter">Debugging using Allinea DDT</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-libraries/intel_mkl.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-libraries/intel_mkl.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

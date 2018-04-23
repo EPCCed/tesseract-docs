@@ -1,0 +1,153 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Debugging using Allinea DDT &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Transferring data from INDY to Cirrus" href="../data-management/transfer.html" />
+    <link rel="prev" title="Intel MKL: BLAS, LAPACK, ScaLAPACK" href="../software-libraries/intel_mkl.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="debugging-using-allinea-ddt">
+<h1>Debugging using Allinea DDT<a class="headerlink" href="#debugging-using-allinea-ddt" title="Permalink to this headline">¶</a></h1>
+<p>Allinea’s Forge tool suite is installed on Cirrus and DDT,  which is a
+debugging tool for scalar, multi-threaded and large-scale parallel
+applications, is available for use in debugging your codes. To compile
+your code for debugging you will usually want to specify the <code class="docutils literal"><span class="pre">-O0</span></code>
+option to turn off all code optimisation (as this can produce a mismatch
+between source code line numbers and debugging information) and <code class="docutils literal"><span class="pre">-g</span></code> to
+include debugging information in the compiled executable. To use this package
+you will need to load the Allinea Forge module and execute <code class="docutils literal"><span class="pre">forge</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">allinea</span>
+<span class="n">forge</span>
+</pre></div>
+</div>
+<div class="section" id="debugging-runs-on-the-login-nodes">
+<h2>Debugging runs on the login nodes<a class="headerlink" href="#debugging-runs-on-the-login-nodes" title="Permalink to this headline">¶</a></h2>
+<p>You can execute and debug your MPI code on the login node which is useful for
+immediate development work with short, simple runs to avoid having to wait
+in the queue. Firstly ensure you have loaded the <code class="docutils literal"><span class="pre">mpt</span></code> library, then start
+forge and click <em>Run</em>. Fill in the nescesary details of your code under the
+<em>application</em> pane, then check the MPI tick box, specify the number of MPI
+processes you wish to run and ensure implementation is set to <em>SGI MPT (2.10+)</em>.
+If this is not set correctly then you can update the configuration via
+clicking the <em>Change</em> button and selecting this option on the <em>MPI/UPC Implementation</em>
+field of the system pane. When you are happy with this hit <em>Run</em> to start.</p>
+</div>
+<div class="section" id="debugging-runs-on-the-compute-nodes">
+<h2>Debugging runs on the compute nodes<a class="headerlink" href="#debugging-runs-on-the-compute-nodes" title="Permalink to this headline">¶</a></h2>
+<p>This involves DDT submitting your job to the queue, this then running and as soon as the compute nodes start executing you will drop into the debug session and be able to interact with your code. Similarly to running on the login node, fill in details of your application and ensure that MPI is ticked. But now change the implementation from <em>SGI MPT (2.10+)</em> to <em>SGI MPT (2.10+, batch)</em> as we are running via the batch system. Then check the <em>Submit to Queue</em> tick box and click the <em>Configure</em> button. In the settings window that pops up you can specify the submission template, one has been prepared one for Cirrus at <code class="docutils literal"><span class="pre">/lustre/sw/allinea/forge-7.0.0/templates/cirrus.qtf</span></code> which we suggest you use - although you are very free to chose another one and/or specialise this as you require. Back on the run page, click the <em>Parameters</em> button and fill in the maximum wallclock time, the budget to charge to and the total number of virtual cores required which determine the number of nodes and are provided as an argument to the <em>-l select=</em> PBS option. Back on the <em>run</em> dialog ensure look at the <em>MPI</em> pane, ensure the <em>number of processes</em> and <em>processes per node</em> settings are correct and then hit <em>Submit</em>.</p>
+</div>
+<div class="section" id="memory-debugging-with-ddt">
+<h2>Memory debugging with DDT<a class="headerlink" href="#memory-debugging-with-ddt" title="Permalink to this headline">¶</a></h2>
+<p>If you are dynamically linking your code and debugging it on the login node then this is fine (just ensure that the <em>Preload the memory debugging library</em> option is ticked in the <em>Details</em> pane.) If you are dynamically linking but intending to debug running on the compute nodes, or statically linking then you need to include the compile option <code class="docutils literal"><span class="pre">-Wl,--allow-multiple-definition</span></code> and explicitly link your executable with Allinea’s memory debugging library. The exactly library to link against depends on your code; <code class="docutils literal"><span class="pre">-ldmalloc</span></code> (for no threading with C), <code class="docutils literal"><span class="pre">-ldmallocth</span></code> (for threading with C), <code class="docutils literal"><span class="pre">-ldmallocxx</span></code> (for no threading with C++) or <code class="docutils literal"><span class="pre">-ldmallocthcxx</span></code> (for threading with C++). The library locations are all set up when the <em>allinea</em> module is loaded so these libraries should be found without further arguments.</p>
+</div>
+<div class="section" id="getting-further-help-on-ddt">
+<h2>Getting further help on DDT<a class="headerlink" href="#getting-further-help-on-ddt" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.allinea.com/products/ddt/">DDT website</a></li>
+<li><a class="reference external" href="https://www.allinea.com/get-support">DDT support page</a></li>
+<li><a class="reference external" href="https://www.allinea.com/user-guide/forge/userguide.html">DDT user guide</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Debugging using Allinea DDT</a><ul>
+<li><a class="reference internal" href="#debugging-runs-on-the-login-nodes">Debugging runs on the login nodes</a></li>
+<li><a class="reference internal" href="#debugging-runs-on-the-compute-nodes">Debugging runs on the compute nodes</a></li>
+<li><a class="reference internal" href="#memory-debugging-with-ddt">Memory debugging with DDT</a></li>
+<li><a class="reference internal" href="#getting-further-help-on-ddt">Getting further help on DDT</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../software-libraries/intel_mkl.html" title="previous chapter">Intel MKL: BLAS, LAPACK, ScaLAPACK</a></li>
+      <li>Next: <a href="../data-management/transfer.html" title="next chapter">Transferring data from INDY to Cirrus</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-tools/ddt.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-tools/ddt.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>STAR-CCM+ &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="VASP" href="vasp.html" />
+    <link rel="prev" title="Quantum Espresso (QE)" href="qe.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="star-ccm">
+<h1>STAR-CCM+<a class="headerlink" href="#star-ccm" title="Permalink to this headline">¶</a></h1>
+<p>STAR-CCM+ is a computational fluid dynamics (CFD) code and beyond.  It
+provides a broad range of validated models to simulate disciplines and
+physics including CFD, computational solid mechanics (CSM),
+electromagnetics, heat transfer, multiphase flow, particle dynamics,
+reacting flow, electrochemistry, aero-acoustics and rheology; the
+simulation of rigid and flexible body motions with techniques
+including mesh morphing, overset mesh and six degrees of freedom
+(6DOF) motion; and the ability to combine and account for the
+interaction between the various physics and motion models in a single
+simulation to cover your specific application.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://mdx.plm.automation.siemens.com/star-ccm-plus">Information about STAR-CCM+ by Siemens</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="using-star-ccm-on-cirrus">
+<h2>Using STAR-CCM+ on Cirrus<a class="headerlink" href="#using-star-ccm-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p>Interactive remote GUI Mode</p>
+<p>A fast and responsive way of running with a GUI is to install
+STAR-CCM+ on your local Windows(7 or 10) or Linux workstation. You can
+then start your local STAR-CCM+ and connect to Cirrus in order to
+submit new jobs or query the status of running jobs. When you install
+your local version, de-activate the FLEXIm installation. FLEXIm is not
+required, since you will be using the FLEXIm on Cirrus.</p>
+<p>You also need to setup passwordless SSH connections to Cirrus.</p>
+<p>You can then start the STAR-CCM+ server on the compute nodes. The
+following script starts the server:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N STAR-CCM_test
+#PBS -l select=1008
+#PBS -l walltime=02:00:00
+#PBS -l place=excl
+#PBS -k oe
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory yhat the job was submitted from
+cd $PBS_O_WORKDIR
+# Load any required modules
+module load mpt
+module load starccm+
+
+export SGI_MPI_HOME=$MPI_ROOT
+
+uniq $PBS_NODEFILE | cut -d . -f 1 &gt; ~/starccm.launcher.host.txt
+starccm+ -server -machinefile ~/starccm.launcher.host.txt -np 504 -rsh ssh -port 42333
+</pre></div>
+</div>
+<p>The port number “42333” should be free. If it is not free STAR-CCM+
+will return with an error. You must then try to use another random
+port in the 42XXX range. You can then use the ‘qstat’ command to find
+out the first node of your application.</p>
+<p>Start your local STAR-CCM+ application and connect to your
+server. Click on the File -&gt; “Connect to Server…” option and use the
+following settings:</p>
+<ul class="simple">
+<li>Host: name of first Cirrus compute node (use ‘qtsat’, e.g. r1i0n32)</li>
+<li>Port: the number that you specified in the submission script</li>
+</ul>
+<p>Select the “Connect through SSH tunnel” option and use:</p>
+<ul class="simple">
+<li>SSH Tunnel Host: cirrus-login0.epcc.ed.ac.uk</li>
+<li>SSH Tunnel Host Username: use your Cirrus username</li>
+<li>SSH Options: -agent</li>
+</ul>
+<p>Your local STAR-CCM+ client should now be connected to the remote
+server. You should be able to run a new simulation or interact with an
+existing one.</p>
+</div>
+<div class="section" id="licensing">
+<h2>Licensing<a class="headerlink" href="#licensing" title="Permalink to this headline">¶</a></h2>
+<p>All users must provide their own license for STAR_CCM+.  To use
+STAR_CCM+ on Cirrus, you must provide the IP address/hostname, and the
+port number, of your local STAR_CCM+ license server.</p>
+<p>EPCC will then add your license server’s details to our License Server
+Gateway on Cirrus (192.168.191.10).</p>
+<p>Please note that your STAR_CCM+ license server must use the same ports
+as our License Server Gateway: this is achieved by simply setting an
+environment variable.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">STAR-CCM+</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-star-ccm-on-cirrus">Using STAR-CCM+ on Cirrus</a></li>
+<li><a class="reference internal" href="#licensing">Licensing</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="qe.html" title="previous chapter">Quantum Espresso (QE)</a></li>
+      <li>Next: <a href="vasp.html" title="next chapter">VASP</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/starccm+.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/starccm+.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

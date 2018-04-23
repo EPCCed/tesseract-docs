@@ -1,0 +1,164 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CASTEP &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CP2K" href="cp2k.html" />
+    <link rel="prev" title="ANSYS Fluent" href="Ansys.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="castep">
+<h1>CASTEP<a class="headerlink" href="#castep" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.castep.org">CASTEP</a>  is a leading code for calculating the
+properties of materials from first principles. Using density functional theory,
+it can simulate a wide range of properties of materials proprieties including
+energetics, structure at the atomic level, vibrational properties, electronic
+response properties etc. In particular it has a wide range of spectroscopic
+features that link directly to experiment, such as infra-red and Raman
+spectroscopies, NMR, and core level spectra.</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.castep.org/CASTEP/Documentation">CASTEP User Guides</a></li>
+<li><a class="reference external" href="http://www.castep.org/CASTEP/OnlineTutorials">CASTEP Tutorials</a></li>
+<li><a class="reference external" href="http://www.castep.org/CASTEP/GettingCASTEP">CASTEP Licensing</a></li>
+</ul>
+</div>
+<div class="section" id="using-castep-on-cirrus">
+<h2>Using CASTEP on Cirrus<a class="headerlink" href="#using-castep-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p><strong>CASTEP is only available to users who have a valid CASTEP licence.</strong></p>
+<p>If you have a CASTEP licence and wish to have access to CASTEP on Cirrus
+please contact the <a class="reference external" href="http://www.cirrus.ac.uk/support/">Cirrus Helpdesk</a>.</p>
+</div>
+<div class="section" id="running-parallel-castep-jobs">
+<h2>Running parallel CASTEP jobs<a class="headerlink" href="#running-parallel-castep-jobs" title="Permalink to this headline">¶</a></h2>
+<p>CASTEP can exploit multiple nodes on Cirrus and will generally be run in
+exclusive mode over more than one node.</p>
+<p>For example, the following script will run a CASTEP job using 4 nodes
+(144 cores).</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N CASTEP_test
+#PBS -l select=4:ncpus=72
+#PBS -l place=excl
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load CASTEP and MPI modules
+module load castep
+module load mpt
+
+# Run using input in test_calc.in
+# Note: &#39;-ppn 36&#39; is required to use all physical cores across
+# nodes as hyperthreading is enabled by default
+mpiexec_mpt -n 144 -ppn 36 castep.mpi test_calc
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">CASTEP</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#using-castep-on-cirrus">Using CASTEP on Cirrus</a></li>
+<li><a class="reference internal" href="#running-parallel-castep-jobs">Running parallel CASTEP jobs</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="Ansys.html" title="previous chapter">ANSYS Fluent</a></li>
+      <li>Next: <a href="cp2k.html" title="next chapter">CP2K</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/software-packages/castep.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/software-packages/castep.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,394 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Singularity Containers &#8212; Cirrus 1.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using Python" href="python.html" />
+    <link rel="prev" title="Running Jobs on Cirrus" href="batch.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="singularity-containers">
+<h1>Singularity Containers<a class="headerlink" href="#singularity-containers" title="Permalink to this headline">¶</a></h1>
+<p>This page was originally based on the documentation at the <a class="reference external" href="http://docs.hpc.shef.ac.uk/en/latest/sharc/software/apps/singularity.html">University of Sheffield HPC service:</a>.</p>
+<p>Designed around the notion of mobility of compute and reproducible science,
+Singularity enables users to have full control of their operating system environment.
+This means that a non-privileged user can “swap out” the Linux operating system and
+environment on the host for a Linux OS and environment that they control.
+So if the host system is running CentOS Linux but your application runs in Ubuntu Linux
+with a particular software stack; you can create an Ubuntu image, install your software
+into that image, copy the image to another host (e.g. Cirrus), and run your application
+on that host in it’s native Ubuntu environment.</p>
+<p>Singularity also allows you to leverage the resources of whatever host you are on.
+This includes high-speed interconnects (i.e. Infinband on Cirrus),
+file systems (i.e. /lustre on Cirrus) and potentially other resources (e.g. the
+licensed Intel compilers on Cirrus).</p>
+<p><strong>Note:</strong> Singularity only supports Linux containers. You cannot create images
+that use Windows or macOS (this is a restriction of the containerisation model
+rather than Singularity).</p>
+<div class="section" id="useful-links">
+<h2>Useful Links<a class="headerlink" href="#useful-links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://singularity.lbl.gov/">Singularity website</a></li>
+<li><a class="reference external" href="http://singularity.lbl.gov/user-guide">Singularity user documentation</a></li>
+</ul>
+</div>
+<div class="section" id="about-singularity-containers-images">
+<h2>About Singularity Containers (Images)<a class="headerlink" href="#about-singularity-containers-images" title="Permalink to this headline">¶</a></h2>
+<p>Similar to Docker,
+a Singularity container (or, more commonly, <em>image</em>) is a self-contained software stack.
+As Singularity does not require a root-level daemon to run its images (as
+is required by Docker) it is suitable for use on a multi-user HPC system such as Cirrus.
+Within the container/image, you have exactly the same permissions as you do in a
+standard login session on the system.</p>
+<p>In practice, this means that an image created on your local machine
+with all your research software installed for local development
+will also run on Cirrus.</p>
+<p>Pre-built images (such as those on <a class="reference external" href="http://hub.docker.com">DockerHub</a> or
+<a class="reference external" href="https://singularity-hub.org/">SingularityHub</a>) can simply be downloaded
+and used on Cirrus (or anywhere else Singularity is installed); see
+<a class="reference internal" href="#use-image-singularity"><span class="std std-ref">Using Singularity Images on Cirrus</span></a>).</p>
+<p>Creating and modifying images requires root permission and so
+must be done on a system where you have such access (in practice, this is
+usually within a virtual machine on your laptop/workstation); see
+<a class="reference internal" href="#create-image-singularity"><span class="std std-ref">Creating Your Own Singularity Images</span></a>.</p>
+</div>
+<div class="section" id="using-singularity-images-on-cirrus">
+<span id="use-image-singularity"></span><h2>Using Singularity Images on Cirrus<a class="headerlink" href="#using-singularity-images-on-cirrus" title="Permalink to this headline">¶</a></h2>
+<p>Singularity images can be used on Cirrus in a number of ways, including:</p>
+<ul class="simple">
+<li>Interactively on the login nodes</li>
+<li>Interactively on compute nodes</li>
+<li>As serial processes within a non-interactive batch script</li>
+<li>As parallel processes within a non-interactive batch script (not yet documented)</li>
+</ul>
+<p>We provide information on each of these scenarios (apart from the parallel use where
+we are still preparing the documentation) below. First, we describe briefly how to
+get exisitng images onto Cirrus so you can use them.</p>
+<div class="section" id="getting-existing-images-onto-cirrus">
+<h3>Getting existing images onto Cirrus<a class="headerlink" href="#getting-existing-images-onto-cirrus" title="Permalink to this headline">¶</a></h3>
+<p>Singularity images are simply files so, if you already have an image file, you can use
+<code class="docutils literal"><span class="pre">scp</span></code> to copy the file to Cirrus as you would with any other file.</p>
+<p>If you wish to get a file from one of the container image repositories then Singularity
+allows you to do this from Cirrus itself.</p>
+<p>This functionality requires tools that are not part of the standard OS on Cirrus so we have
+provided a Singularity image that allows you to build images from remote repositories (i.e.
+you use a Singularity image to build Singularity images!).</p>
+<p>For example, to retrieve an image from DockerHub on Cirrus we fist need to enter an
+interactive session in the image we provide for building Singularity images:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[user@cirrus-login0 ~]$ module load singularity
+[user@cirrus-login0 ~]$ singularity exec $CIRRUS_SIMG/cirrus-sbuild.simg /bin/bash --login
+Singularity&gt;
+</pre></div>
+</div>
+<p>This invokes a login bash shell within the <code class="docutils literal"><span class="pre">$CIRRUS_SIMG/cirrus-sbuild.simg</span></code> image as
+indicated by our prompt change. (We need a login shell to allow <code class="docutils literal"><span class="pre">module</span></code> commands to work
+within the image.)</p>
+<p>Now we are in the image we can load the singularity module (to get access to the Singularity
+commands) and pull an image from DockerHub:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Singularity</span><span class="o">&gt;</span> <span class="n">module</span> <span class="n">load</span> <span class="n">singularity</span>
+<span class="n">Singularity</span><span class="o">&gt;</span> <span class="n">singularity</span> <span class="n">build</span> <span class="n">lolcow</span><span class="o">.</span><span class="n">simg</span> <span class="n">docker</span><span class="p">:</span><span class="o">//</span><span class="n">godlovedc</span><span class="o">/</span><span class="n">lolcow</span>
+<span class="n">Docker</span> <span class="n">image</span> <span class="n">path</span><span class="p">:</span> <span class="n">index</span><span class="o">.</span><span class="n">docker</span><span class="o">.</span><span class="n">io</span><span class="o">/</span><span class="n">godlovedc</span><span class="o">/</span><span class="n">lolcow</span><span class="p">:</span><span class="n">latest</span>
+<span class="n">Cache</span> <span class="n">folder</span> <span class="nb">set</span> <span class="n">to</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">docker</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="n">base</span> <span class="n">Singularity</span> <span class="n">environment</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">sha256</span><span class="p">:</span><span class="mi">9</span><span class="n">fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">sha256</span><span class="p">:</span><span class="mi">3</span><span class="n">b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">sha256</span><span class="p">:</span><span class="mi">9</span><span class="n">d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">sha256</span><span class="p">:</span><span class="n">d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">sha256</span><span class="p">:</span><span class="mi">7</span><span class="n">fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">docker</span><span class="o">/</span><span class="n">sha256</span><span class="p">:</span><span class="mf">8e860504</span><span class="n">ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">Importing</span><span class="p">:</span> <span class="o">/</span><span class="n">lustre</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">t01</span><span class="o">/</span><span class="n">user</span><span class="o">/.</span><span class="n">singularity</span><span class="o">/</span><span class="n">metadata</span><span class="o">/</span><span class="n">sha256</span><span class="p">:</span><span class="n">ab22e7ef68858b31e1716fa2eb0d3edec81ae69c6b235508d116a09fc7908cff</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">WARNING</span><span class="p">:</span> <span class="n">Building</span> <span class="n">container</span> <span class="k">as</span> <span class="n">an</span> <span class="n">unprivileged</span> <span class="n">user</span><span class="o">.</span> <span class="n">If</span> <span class="n">you</span> <span class="n">run</span> <span class="n">this</span> <span class="n">container</span> <span class="k">as</span> <span class="n">root</span>
+<span class="n">WARNING</span><span class="p">:</span> <span class="n">it</span> <span class="n">may</span> <span class="n">be</span> <span class="n">missing</span> <span class="n">some</span> <span class="n">functionality</span><span class="o">.</span>
+<span class="n">Building</span> <span class="n">Singularity</span> <span class="n">image</span><span class="o">...</span>
+<span class="n">Singularity</span> <span class="n">container</span> <span class="n">built</span><span class="p">:</span> <span class="n">lolcow</span><span class="o">.</span><span class="n">simg</span>
+<span class="n">Cleaning</span> <span class="n">up</span><span class="o">...</span>
+</pre></div>
+</div>
+<p>The first argument to <code class="docutils literal"><span class="pre">singularity</span> <span class="pre">build</span></code> (lolcow.simg) specifies a path and name for your container.
+The second argument (docker://godlovedc/lolcow) gives the DockerHub URI from which to download the image.</p>
+<p>Now we can exit the image and run our new image we have just built on the Cirrus login node:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[user@cirrus-login0 ~]$ singularity run lolcow.simg
+</pre></div>
+</div>
+<p>This image contains a <em>runscript</em> that tells Singularity what to do if we run the image. We demonstrate
+different ways to use images below.</p>
+<p>Similar syntax can be used for Singularity Hub. For more information see the Singularity documentation:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://singularity.lbl.gov/docs-build-container">Build a Container</a></li>
+</ul>
+</div>
+<div class="section" id="interactive-use-on-the-login-nodes">
+<h3>Interactive use on the login nodes<a class="headerlink" href="#interactive-use-on-the-login-nodes" title="Permalink to this headline">¶</a></h3>
+<p>Once you have an image file, using it on the login nodes in an interactive way is extremely simple:
+you use the <code class="docutils literal"><span class="pre">singularity</span> <span class="pre">shell</span></code> command. Using the image we built in the example above:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[user@cirrus-login0 ~]$ module load singularity
+[user@cirrus-login0 ~]$ singularity shell lolcow.simg
+Singularity: Invoking an interactive shell within container...
+
+Singularity lolcow.simg:~&gt;
+</pre></div>
+</div>
+<p>Within a Singularity image your home directory will be available. The directory with
+centrally-installed software (<code class="docutils literal"><span class="pre">/lustre/sw</span></code>) is also available in images by default. Note that
+the <code class="docutils literal"><span class="pre">module</span></code> command will not work in images unless you have installed he required software and
+configured the environment correctly; we describe how to do this below.</p>
+<p>Once you have finished using your image, you return to the Cirrus login node command line with the
+<code class="docutils literal"><span class="pre">exit</span></code> command:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>Singularity lolcow.simg:~&gt; exit
+exit
+[user@cirrus-login0 ~]$
+</pre></div>
+</div>
+</div>
+<div class="section" id="interactive-use-on-the-compute-nodes">
+<h3>Interactive use on the compute nodes<a class="headerlink" href="#interactive-use-on-the-compute-nodes" title="Permalink to this headline">¶</a></h3>
+<p>The process for using an image interactively on the compute nodes is very similar to that for
+using them on the login nodes. The only difference is that you have to submit an interactive
+serial job to get interactive access to the compute node first.</p>
+<p>For example, to reserve a full node for you to work on interactively you would use:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[user@cirrus-login0 ~]$ qsub -IVl select=1:ncpus=72,walltime=0:20:0,place=excl -A t01
+qsub: waiting for job 234192.indy2-login0 to start
+
+...wait until job starts...
+
+qsub: job 234192.indy2-login0 ready
+
+[user@r1i2n13 ~]$
+</pre></div>
+</div>
+<p>Note the prompt has changed to show you are on a compute node. Now you can use the image
+in the same way as on the login node</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[user@r1i2n13 ~]$ module load singularity
+[user@r1i2n13 ~]$ singularity shell lolcow.simg
+Singularity: Invoking an interactive shell within container...
+
+Singularity lolcow.simg:~&gt; exit
+exit
+[user@r1i2n13 ~]$ exit
+[user@cirrus-login0 ~]$
+</pre></div>
+</div>
+<p>Note we used <code class="docutils literal"><span class="pre">exit</span></code> to leave the interactive image shell and then <code class="docutils literal"><span class="pre">exit</span></code> again to leave the
+interactive job on the compute node.</p>
+</div>
+<div class="section" id="serial-processes-within-a-non-interactive-batch-script">
+<h3>Serial processes within a non-interactive batch script<a class="headerlink" href="#serial-processes-within-a-non-interactive-batch-script" title="Permalink to this headline">¶</a></h3>
+<p>You can also use Singularity images within a non-interactive batch script as you would any
+other command. If your image contains a <em>runscript</em> then you can use <code class="docutils literal"><span class="pre">singularity</span> <span class="pre">run</span></code> to
+execute the runscript in the job. You can also use <code class="docutils literal"><span class="pre">singularity</span> <span class="pre">exec</span></code> to execute arbitrary
+commands (or scripts) within the image.</p>
+<p>An exmaple job submission script to run a serial job that executes the runscript within the
+<code class="docutils literal"><span class="pre">lolcow.simg</span></code> we built above on Cirrus would be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>#!/bin/bash --login
+
+# PBS job options (name, compute nodes, job time)
+#PBS -N simg_test
+#PBS -l select=1:ncpus=1
+#PBS -l walltime=0:20:0
+
+# Replace [budget code] below with your project code (e.g. t01)
+#PBS -A [budget code]
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+# Load any required modules
+module load singularity
+
+# Run the serial executable
+singularity run $HOME/lolcow.simg
+</pre></div>
+</div>
+<p>You submit this in the usual way and the output would be in the STDOUT/STDERR files in the
+usual way.</p>
+</div>
+</div>
+<div class="section" id="creating-your-own-singularity-images">
+<span id="create-image-singularity"></span><h2>Creating Your Own Singularity Images<a class="headerlink" href="#creating-your-own-singularity-images" title="Permalink to this headline">¶</a></h2>
+<p>As we saw above, you can create Singularity images by importing from
+DockerHub or Singularity Hub on Cirrus itself. If you wish to create your
+own custom image then you must install Singularity on a system where you
+have root (or administrator) privileges - often your own laptop or
+workstation.</p>
+<p>We provide links below to instructions on how to install Singularity
+locally and then cover what options you need to include in a
+Singularity recipe file to create images that can run on Cirrus and
+access the software development modules. (This can be useful if you
+want to create a custom environment but still want to compile and
+link against libraries that you only have access to on Cirrus such
+as the Intel compilers, HPE MPI libraries, etc.)</p>
+<div class="section" id="installing-singularity-on-your-local-machine">
+<h3>Installing Singularity on Your Local Machine<a class="headerlink" href="#installing-singularity-on-your-local-machine" title="Permalink to this headline">¶</a></h3>
+<p>You will need Singularity installed on your machine in order to locally run,
+create and modify images. How you install Singularity on your laptop/workstation
+depends on the operating system you are using.</p>
+<p>If yout are using Windows or macOS, the simplest solution is to use
+<a class="reference external" href="http://www.vagrantup.com">Vagrant</a> to give you am easy to use virtual
+environment with Linux and Singularity installed. The Singularity website
+has instructions on how to use this method to install Singularity:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://singularity.lbl.gov/install-mac">Installing Singularity on macOS with Vagrant</a></li>
+<li><a class="reference external" href="http://singularity.lbl.gov/install-windows">Installing Singularity on Windows with Vagrant</a></li>
+</ul>
+<p>If you are using Linux then you can usually install Singularity directly, see:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://singularity.lbl.gov/install-linux">Installing Singularity on Linux</a></li>
+</ul>
+</div>
+<div class="section" id="singularity-recipes-to-access-modules-on-cirrus">
+<h3>Singularity Recipes to Access modules on Cirrus<a class="headerlink" href="#singularity-recipes-to-access-modules-on-cirrus" title="Permalink to this headline">¶</a></h3>
+<p>You may want your custom image to be able to access the modules environment
+on Cirrus so you can make use of custom software that you cannot access
+elsewhere. We demonstrate how to do this for a CentOS 7 image but the steps
+are easily translated for other flavours of Linux.</p>
+<p>Two things are needed in the Singularity recipe file:</p>
+<ul class="simple">
+<li>Installation of <code class="docutils literal"><span class="pre">environment-modules</span></code></li>
+<li>Setting of <code class="docutils literal"><span class="pre">MODULEPATH</span></code> to point to the Cirrus modulefiles</li>
+</ul>
+<p>In addition, when you use the container you must invoke access as a login
+shell to have access to the module commands.</p>
+<p>Here is an example recipe file to build a CentOS 7 image with access to
+TCL modules alread installed on Cirrus:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">BootStrap</span><span class="p">:</span> <span class="n">docker</span>
+<span class="n">From</span><span class="p">:</span> <span class="n">centos</span><span class="p">:</span><span class="n">centos7</span>
+
+<span class="o">%</span><span class="n">post</span>
+    <span class="n">yum</span> <span class="n">update</span> <span class="o">-</span><span class="n">y</span>
+    <span class="n">yum</span> <span class="n">install</span> <span class="n">environment</span><span class="o">-</span><span class="n">modules</span> <span class="o">-</span><span class="n">y</span>
+</pre></div>
+</div>
+<p>If we save this recipe to a file called <code class="docutils literal"><span class="pre">cirrus-mods.def</span></code> then we can use the
+following command to build this image (remember this command must be run on a
+system where you have root access, not Cirrus):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">me</span><span class="nd">@my</span><span class="o">-</span><span class="n">system</span><span class="p">:</span><span class="o">~&gt;</span> <span class="n">sudo</span> <span class="n">singularity</span> <span class="n">build</span> <span class="n">cirrus</span><span class="o">-</span><span class="n">mods</span><span class="o">.</span><span class="n">simg</span> <span class="n">cirrus</span><span class="o">-</span><span class="n">mods</span><span class="o">.</span><span class="k">def</span>
+</pre></div>
+</div>
+<p>The resulting image file (<code class="docutils literal"><span class="pre">cirrus-mods.simg</span></code>) can then be compied to Cirrus
+using scp.</p>
+<p>When you use the image interactively on Cirrus you must start with a login
+shell, i.e.:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>[user@cirrus-login0 ~]$ module load singularity
+[user@cirrus-login0 ~]$ singularity exec cirrus-mods.simg /bin/bash --login
+Singularity&gt; module avail intel-compilers
+
+------------------------- /lustre/sw/modulefiles ---------------------
+intel-compilers-16/16.0.2.181
+intel-compilers-16/16.0.3.210(default)
+intel-compilers-17/17.0.2.174(default)
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/cirrus_logo_white-Transparent-Background.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Singularity Containers</a><ul>
+<li><a class="reference internal" href="#useful-links">Useful Links</a></li>
+<li><a class="reference internal" href="#about-singularity-containers-images">About Singularity Containers (Images)</a></li>
+<li><a class="reference internal" href="#using-singularity-images-on-cirrus">Using Singularity Images on Cirrus</a><ul>
+<li><a class="reference internal" href="#getting-existing-images-onto-cirrus">Getting existing images onto Cirrus</a></li>
+<li><a class="reference internal" href="#interactive-use-on-the-login-nodes">Interactive use on the login nodes</a></li>
+<li><a class="reference internal" href="#interactive-use-on-the-compute-nodes">Interactive use on the compute nodes</a></li>
+<li><a class="reference internal" href="#serial-processes-within-a-non-interactive-batch-script">Serial processes within a non-interactive batch script</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-your-own-singularity-images">Creating Your Own Singularity Images</a><ul>
+<li><a class="reference internal" href="#installing-singularity-on-your-local-machine">Installing Singularity on Your Local Machine</a></li>
+<li><a class="reference internal" href="#singularity-recipes-to-access-modules-on-cirrus">Singularity Recipes to Access modules on Cirrus</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="batch.html" title="previous chapter">Running Jobs on Cirrus</a></li>
+      <li>Next: <a href="python.html" title="next chapter">Using Python</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user-guide/singularity.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, EPCC.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/user-guide/singularity.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
