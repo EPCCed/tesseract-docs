@@ -10,7 +10,7 @@ you wish to use using the appropriate modules, then load all the
 required library modules (e.g. numerical libraries, IO format libraries).
 
 Additionally, if you are compiling parallel applications using MPI 
-(or SHMEM, etc.) then you will need to load one of the MPI environments
+(or SHMEM, etc.) then you will need to load the MPI environment
 and use the appropriate compiler wrapper scripts.
 
 By default, all users on Tesseract start with no modules loaded.
@@ -19,13 +19,6 @@ Basic usage of the ``module`` command on Tesseract is covered below. For
 full documentation please see:
 
 -  `Linux manual page on modules <http://linux.die.net/man/1/module>`__
-
-**Note:** The modules provided by the `Spack <http://spack.readthedocs.io>`__
-package manager behave differently to those usually encountered in Linux
-environments. In particular, each module has the versions of dependency
-libraries hardcoded using RPATH. More information is provided below. You
-can identify Spack modules as they have a random string of 7 characters at
-the end of their name, e.g.: ``fftw-3.3.5-intel-17.0.2-dxt2dzn``.
 
 Using the modules environment
 -----------------------------
@@ -123,85 +116,6 @@ Suppose you have loaded version 16.0.2.181, say, of intel-compilers-16, the foll
 
     module swap intel-compilers-16 intel-compilers-16/16.0.2.181
 
-Modules provided by Spack
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Care must be taken when using modules provided by Spack as they behave differently
-from standard Linux modules.
-
-The `Spack <http://spack.readthedocs.io>`__ package management tool is used
-to manage much of the software and libraries installed on Tesseract. Spack allows
-us to automatically resolve dependencies and have multiple versions of tested
-software installed simultaneously without them interfering with each other.
-
-To achieve this, Spack makes use of RPATH to hardcode the paths of dependencies
-into libraries. This means that when you load a module for a particular library
-you do not need to load any further modules for dependencies of that library.
-
-For example, the *boost* toolkit depends on the MPI, zlib and bzip2 libraries:
-
-::
-
-    boost@1.64.0
-        ^bzip2@1.0.6
-        ^mpich@2.14
-        ^zlib@1.2.10
-
-Spack arranges things so that if you load the boost module:
-
-::
-
-    module load boost-1.64.0-gcc-6.2.0-pftxg46
-
-then you do not also need to load the bzip2, mpt and zlib modules.
-
-This, however, can lead to behaviour that is unexpected for modules. For example,
-on Tesseract there are two versions of zlib available: 1.2.8 and 1.2.10. You may
-imagine that you can use boost with zlib 1.2.8 with the following commands:
-
-::
-
-    module load zlib-1.2.8-gcc-6.2.0-epathtp
-    module load boost-1.64.0-gcc-6.2.0-pftxg46
-
-**but this will not work**. boost will **still** use zlib 1.2.10 as the path
-to this is hrdcoded into boost itself via RPATH. If you wish to use the 
-older version of zlib then you must load it and then compile boost yourself.
-
-If you wish to see what versions of libraries are hardcoded into a particular
-Spack module then you must use Spack commands available after loading the 
-``spack`` module, e.g.:
-
-::
-
-
-    [auser@cirrus-login0 ~]$ module avail boost
-
-    ------------ /lustre/sw/spack/share/spack/modules/linux-centos7-x86_64 ------------
-    boost-1.63.0-intel-17.0.2-fl25xqn boost-1.64.0-gcc-6.2.0-pftxg46
-
-    [auser@cirrus-login0 ~]$ module load spack
-
-    [auser@cirrus-login0 ~]$ spack find -dl boost
-    ==> 2 installed packages.
-    -- linux-centos7-x86_64 / gcc@6.2.0 -----------------------------
-    pftxg46    boost@1.64.0
-    545wezu        ^bzip2@1.0.6
-    kskvysh        ^mpich@2.14
-    4og3my2        ^zlib@1.2.10
-
-
-    -- linux-centos7-x86_64 / intel@17.0.2 --------------------------
-    fl25xqn    boost@1.63.0
-    nq2yt4x        ^bzip2@1.0.6
-    jbjvxs7        ^zlib@1.2.10
-
-This shows their are two boost modules installed (one for the Intel compilers
-and one for the GCC compilers), they both depend on zlib 1.0.6 and bzip2 1.2.10
-and the GCC version also depends on MPI 2.14 (SGI MPT 2.14). The paths for these
-dependencies are hardocoded into the boost RPATH.
-
-
 Available Compiler Suites
 -------------------------
 
@@ -255,22 +169,10 @@ Once you have loaded the module, the compilers are available as:
 Compiling MPI codes
 -------------------
 
-There are two MPI libraries currently available on Tesseract:
-
-* SGI Message Passing Toolkit (MPT)
-* Intel MPI
-
-The compilation and run commands are different depending on which of these
-libraries you choose. Most of the applications we have compiled on Tesseract
-have made use of the SGI MPT library and we only use Intel MPI if SGI MPT
-cannot be used for some reason. If you can use either library it is
-worthwhile running a few tests to discover if either provides a performance
-advantage for your application.
-
-The following sections discuss each of the MPI library options in turn.
+Tesseract currently supports the Intel MPI library.
 
 You should also consult the chapter on running jobs through the batch system
-for examples of how to run jobs compiled against the different MPI libraries.
+for examples of how to run jobs compiled against MPI.
 
 **Remember:** by default, all compilers produce dynamic executables on
 Tesseract. This means that you must load the same modules at runtime (usually
