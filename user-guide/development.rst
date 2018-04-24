@@ -1,11 +1,11 @@
 Application Development Environment
 ===================================
 
-The application development environment on Cirrus is primarily
+The application development environment on Tesseract is primarily
 controlled through the *modules* environment. By loading and switching
 modules you control the compilers, libraries and software available.
 
-This means that for compiling on Cirrus you typically set the compiler
+This means that for compiling on Tesseract you typically set the compiler
 you wish to use using the appropriate modules, then load all the
 required library modules (e.g. numerical libraries, IO format libraries).
 
@@ -13,9 +13,9 @@ Additionally, if you are compiling parallel applications using MPI
 (or SHMEM, etc.) then you will need to load one of the MPI environments
 and use the appropriate compiler wrapper scripts.
 
-By default, all users on Cirrus start with no modules loaded.
+By default, all users on Tesseract start with no modules loaded.
 
-Basic usage of the ``module`` command on Cirrus is covered below. For
+Basic usage of the ``module`` command on Tesseract is covered below. For
 full documentation please see:
 
 -  `Linux manual page on modules <http://linux.die.net/man/1/module>`__
@@ -130,7 +130,7 @@ Care must be taken when using modules provided by Spack as they behave different
 from standard Linux modules.
 
 The `Spack <http://spack.readthedocs.io>`__ package management tool is used
-to manage much of the software and libraries installed on Cirrus. Spack allows
+to manage much of the software and libraries installed on Tesseract. Spack allows
 us to automatically resolve dependencies and have multiple versions of tested
 software installed simultaneously without them interfering with each other.
 
@@ -156,7 +156,7 @@ Spack arranges things so that if you load the boost module:
 then you do not also need to load the bzip2, mpt and zlib modules.
 
 This, however, can lead to behaviour that is unexpected for modules. For example,
-on Cirrus there are two versions of zlib available: 1.2.8 and 1.2.10. You may
+on Tesseract there are two versions of zlib available: 1.2.8 and 1.2.10. You may
 imagine that you can use boost with zlib 1.2.8 with the following commands:
 
 ::
@@ -205,7 +205,7 @@ dependencies are hardocoded into the boost RPATH.
 Available Compiler Suites
 -------------------------
 
-**Note:** As Cirrus uses dynamic linking by default you will generally also need
+**Note:** As Tesseract uses dynamic linking by default you will generally also need
 to load any modules you used to compile your code in your job submission
 script when you run your code.
 
@@ -228,7 +228,7 @@ C++ with Intel Compilers
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Intel compilers rely on GCC C++ headers and libraries to support most recent C++
-features. If you are using Intel compilers to compile C++ on Cirrus you should 
+features. If you are using Intel compilers to compile C++ on Tesseract you should 
 also load the gcc/6.2.0 module to have access to the correct C++ files:
 
 ::
@@ -255,13 +255,13 @@ Once you have loaded the module, the compilers are available as:
 Compiling MPI codes
 -------------------
 
-There are two MPI libraries currently available on Cirrus:
+There are two MPI libraries currently available on Tesseract:
 
 * SGI Message Passing Toolkit (MPT)
 * Intel MPI
 
 The compilation and run commands are different depending on which of these
-libraries you choose. Most of the applications we have compiled on Cirrus
+libraries you choose. Most of the applications we have compiled on Tesseract
 have made use of the SGI MPT library and we only use Intel MPI if SGI MPT
 cannot be used for some reason. If you can use either library it is
 worthwhile running a few tests to discover if either provides a performance
@@ -273,7 +273,7 @@ You should also consult the chapter on running jobs through the batch system
 for examples of how to run jobs compiled against the different MPI libraries.
 
 **Remember:** by default, all compilers produce dynamic executables on
-Cirrus. This means that you must load the same modules at runtime (usually
+Tesseract. This means that you must load the same modules at runtime (usually
 in your job submission script) as you have loaded at compile time.
 
 Using SGI MPT
@@ -448,7 +448,7 @@ Useful compiler options
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Whilst difference codes will benefit from compiler optimisations in
-different ways, for reasonable performance on Cirrus, at least
+different ways, for reasonable performance on Tesseract, at least
 initially, we suggest the following compiler options:
 
 Intel
@@ -469,7 +469,7 @@ GNU
     ``-Ofast -funroll-loops``
 
 Vectorisation, which is one of the important compiler optimisations for
-Cirrus, is enabled by default as follows:
+Tesseract, is enabled by default as follows:
 
 Intel
     At ``-O2`` and above
@@ -490,7 +490,7 @@ GNU
 Using static linking/libraries
 -------------------------------
 
-By default, executables on Cirrus are built using shared/dynamic libraries 
+By default, executables on Tesseract are built using shared/dynamic libraries 
 (that is, libraries which are loaded at run-time as and when
 needed by the application) when using the wrapper scripts. 
 
