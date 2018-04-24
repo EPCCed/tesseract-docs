@@ -2,35 +2,23 @@ Introduction
 ============
 
 This guide is designed to be a reference for users of the
-high-performance computing (HPC) facility: Cirrus. It provides all the
+high-performance computing (HPC) facility: Tesseract. It provides all the
 information needed to access the system, transfer data, manage your
 resources (disk and compute time), submit jobs, compile programs and
 manage your environment.
 
-Acknowledging Cirrus
---------------------
+Acknowledging Tesseract
+-----------------------
 
-You should use the following phrase to acknowledge Cirrus in all
+You should use the following phrase to acknowledge Tesseract in all
 research outputs that have used the facility:
 
-*This work used EPCC's Cirrus HPC Service (https://www.epcc.ed.ac.uk/cirrus).*
+*This work used the DiRAC Extreme Scaling HPC Service (https://www.dirac.ac.uk).*
 
-You should also tag outputs with the keyword *Cirrus* whenever possible.
+You should also tag outputs with the keyword *DiRAC* whenever possible.
 
 Hardware
 --------
 
-Details of the Cirrus hardware are available on the Cirrus website:
+TBC
 
-* `Cirrus Hardware <http://www.cirrus.ac.uk/about/hardware.html>`_
-
-Useful terminology
-------------------
-
-This is a list of terminology used throughout this guide and its
-meaning.
-
-kAU
-    Cirrus CPU time is measured in kAU. Each job you run on the service
-    consumes kAUs from your budget. You can find out more about kAUs and
-    how to track your usage in the :doc:`resource_management`
