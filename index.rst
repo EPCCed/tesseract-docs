@@ -36,8 +36,6 @@ and the documentation for the `ARCHER National Supercomputing Service <http://ww
    user-guide/resource_management
    user-guide/development
    user-guide/batch
-   user-guide/singularity
-   user-guide/python
    user-guide/reading
 
 .. toctree::
@@ -45,10 +43,4 @@ and the documentation for the `ARCHER National Supercomputing Service <http://ww
    :caption: Software Libraries
 
    software-libraries/intel_mkl
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Software Tools
-
-   software-tools/ddt
 
