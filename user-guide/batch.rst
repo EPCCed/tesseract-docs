@@ -260,8 +260,8 @@ Example job submssion scripts are included in full below. They are also
 available via the following links:
 
 * Intel MPI Job: :download:`example_mpi_impi.bash <example_mpi_impi.bash>`
-
 * Intel MPI Hybrid MPI/OpenMP Job: :download:`example_hybrid_impi.bash <example_hybrid_impi.bash>` 
+* Intel MPI Array MPI Job: :download:`example_array_impi.bash <example_array_impi.bash>` 
 
 Example: Intel MPI job submission script for MPI parallel job
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
