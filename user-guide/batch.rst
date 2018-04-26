@@ -115,7 +115,7 @@ specify three things:
    ``-l select=[Nodes]`` option. Each node has 24
    cores (2x 12-core processors). For example, to select 16 nodes
    (1536 cores in total) you would use
-   ``-l select=4``. 
+   ``-l select=16``. 
 -  The maximum length of time (i.e. walltime) you want the job to run
    for via the ``-l walltime=[hh:mm:ss]`` option. To ensure the
    minimum wait time for your job, you should specify a walltime as
@@ -128,9 +128,8 @@ specify three things:
 In addition to these mandatory specifications, there are many other
 options you can provide to PBS. The following options may be useful:
 
-- The name of the job can be set with the ``-N`` option. In the examples below
-  the name will be "My\_job", but you can replace "My\_job" with any
-  name you want. The name will be used in various places. In particular
+- The name of the job can be set with the ``-N <name>`` option.
+  The name will be used in various places. In particular
   it will be used in the queue listing and to generate the name of your
   output and/or error file(s). Note there is a limit on the size of the
   name.
@@ -151,11 +150,14 @@ command to start your executable in parallel.
 Intel MPI
 ~~~~~~~~~
 
-Intel MPI is accessed at runtime by loading the ``intel-tools-18``.
+Intel MPI is accessed at runtime by loading the ``intel-mpi-18``.
 
 ::
 
-   module load intel-tools-18
+   module load intel-mpi-18
+
+but it is usually added through the ``intel-tools-18`` module which
+sets up the Intel compilers and asscociated libraries.
 
 Intel MPI: parallel job launcher ``mpirun``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -165,7 +167,7 @@ The Intel MPI parallel job launcher on Tesseract is ``mpirun``.
 .. note::
    This parallel job launcher is only available once you have
    loaded the ``intel-mpi-18`` module (usually via the 
-   ``intel-tools-18`` module.
+   ``intel-tools-18`` module).
 
 A sample MPI launch line using ``mpirun`` looks like:
 
@@ -173,7 +175,7 @@ A sample MPI launch line using ``mpirun`` looks like:
 
     mpirun -n 1536 -ppn 24 ./my_mpi_executable.x arg1 arg2
 
-This will start the parallel executable ``my\_mpi\_executable.x`` with
+This will start the parallel executable ``my_mpi_executable.x`` with
 arguments "arg1" and "arg2". The job will be started using 1536 MPI
 processes, with 24 MPI processes placed on each compute node 
 (this would use all the physical cores on each node). This would
