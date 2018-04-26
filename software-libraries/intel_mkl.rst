@@ -39,8 +39,8 @@ to the compilers and MKL libraries.
 
    module load intel-tools-18
 
-Once you have the modules loaded you need to use the SGI versions of BLACS
-at link time to include ScaLAPACK. Remember to use the MPI versions of
+Once you have the modules loaded you need to specify ``-mkl=cluster`` to build against
+the MPI parallel version of MKL (including BLACS and ScaLAPACK). Remember to use the MPI versions of
 the compilers:
 
 ::
