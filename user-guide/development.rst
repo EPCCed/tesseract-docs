@@ -32,7 +32,7 @@ software) are available on the system is performed using the
 
 ::
 
-    user@system:~> module avail
+    [user@tesseract-login1 ~]$ module avail
     ...
 
 This will list all the names and versions of the modules available on
@@ -44,77 +44,71 @@ service develops the default version will change.
 
 You can list all the modules of a particular type by providing an
 argument to the ``module avail`` command. For example, to list all
-available versions of the Intel Compiler type:
+available versions of the Intel libraries, compilers and tools:
 
 ::
 
-    [user@cirrus-login0 ~]$ module avail intel-compilers
+    [user@tesseract-login1 ~]$ module avail intel
+
+    ------------------------------ /tessfs1/sw/modulefiles -------------------------------
+    intel-cc-18/18.1.163    intel-fc-18/18.1.163    intel-tools-18
+    intel-cmkl-18/18.1.163  intel-mpi-18/18.1.163   intel-vtune-18/18.1.163
  
-    --------------------------------------- /lustre/sw/modulefiles ---------------------------------------
-    intel-compilers-16/16.0.2.181 intel-compilers-16/16.0.3.210
 
 If you want more info on any of the modules, you can use the
 ``module help`` command:
 
 ::
 
-    [user@cirrus-login0 ~]$ module help mpt
+   [user@tesseract-login1 ~]$ module help intel-cmkl-18/18.1.163 
 
-    ----------- Module Specific Help for 'mpt/2.14' -------------------
+   ----------- Module Specific Help for 'intel-cmkl-18/18.1.163' ---------------------------
 
-    The SGI Message Passing Toolkit (MPT) is an optimized MPI
-    implementation for SGI systems and clusters.  See the
-    MPI(1) man page and the MPT User's Guide for more
-    information.
+   Sets up the paths for Intel Cluster Math Kernal Library 18.1.163
 
 The simple ``module list`` command will give the names of the modules
 and their versions you have presently loaded in your envionment:
 
 ::
 
-    [user@cirrus-login0 ~]$ module list
-    Currently Loaded Modulefiles:
-    1) mpt/2.14                        3) intel-fc-16/16.0.3.210
-    2) intel-cc-16/16.0.3.210          4) intel-compilers-16/16.0.3.210
+   [user@tesseract-login1 ~]$ module list
+   Currently Loaded Modulefiles:
+     1) intel-cc-18/18.1.163      4) intel-mpi-18/18.1.163
+     2) intel-fc-18/18.1.163      5) intel-vtune-18/18.1.163
+     3) intel-cmkl-18/18.1.163    6) intel-tools-18
 
 Loading, unloading and swapping modules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To load a module to use ``module add`` or ``module load``. For example,
-to load the intel-compilers-17 into the development environment:
+to load the Intel Fortran compilers into the development environment:
 
 ::
 
-    module load intel-compilers-17
+    module load intel-fc-18
 
-This will load the default version of the intel commpilers Library. If
+This will load the default version of the intel fortran compilers. If
 you need a specfic version of the module, you can add more information:
 
 ::
 
-    module load intel-compilers-17/17.0.2.174
+    module load intel-fc-18/18.1.163
 
-will load version 16.0.3.210 for you, regardless of the default. If you
+will load version 18.1.163 for you, regardless of the default. If you
 want to clean up, ``module remove`` will remove a loaded module:
 
 ::
 
-    module remove intel-compilers-17
+    module remove intel-fc-18
 
-(or ``module rm intel-compilers-17`` or
-``module unload intel-compilers-17``) will unload what ever version of
-intel-compilers-17 (even if it is not the default) you might have
+(or ``module rm intel-fc-18`` or
+``module unload intel-fc-18``) will unload what ever version of
+intel-fc-17 (even if it is not the default) you might have
 loaded. There are many situations in which you might want to change the
 presently loaded version to a different one, such as trying the latest
 version which is not yet the default or using a legacy version to keep
 compatibility with old data. This can be achieved most easily by using 
-"module swap oldmodule newmodule". 
-
-Suppose you have loaded version 16.0.2.181, say, of intel-compilers-16, the following command will change to version 16.0.3.210:
-
-::
-
-    module swap intel-compilers-16 intel-compilers-16/16.0.2.181
+``module swap oldmodule newmodule``. 
 
 Available Compiler Suites
 -------------------------
@@ -126,11 +120,11 @@ script when you run your code.
 Intel Compiler Suite
 ~~~~~~~~~~~~~~~~~~~~
 
-The Intel compiler suite is accessed by loading the ``intel-compilers-*`` module. For example:
+The Intel compiler suite is accessed by loading the ``intel-tools-*`` module. For example:
 
 ::
 
-    module load intel-compilers-17
+    module load intel-tools-18
 
 Once you have loaded the module, the compilers are available as:
 
@@ -138,29 +132,12 @@ Once you have loaded the module, the compilers are available as:
 * ``icc`` - C
 * ``icpc`` - C++
 
-C++ with Intel Compilers
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Intel compilers rely on GCC C++ headers and libraries to support most recent C++
-features. If you are using Intel compilers to compile C++ on Tesseract you should 
-also load the gcc/6.2.0 module to have access to the correct C++ files:
-
-::
-    module load gcc/6.2.0
-
-**Note:** You will also need to load this module in your job submission scripts
-when running code compiled in this way.
-
 GCC Compiler Suite
 ~~~~~~~~~~~~~~~~~~
 
-The GCC compiler suite is accessed by loading the ``gcc`` module. For example:
+The GCC 4.8.5 compiler suite is available by default without loading any modules.
 
-::
-
-    module load gcc
-
-Once you have loaded the module, the compilers are available as:
+The compilers are available as:
 
 * ``gfortran`` - Fortran
 * ``gcc`` - C
@@ -182,11 +159,14 @@ Using Intel MPI
 ~~~~~~~~~~~~~~~
 
 To compile MPI code with Intel MPI, using any compiler, you must first load the
-"intel-mpi-17" module:
+"intel-mpi-18" module:
 
 ::
 
-   module load intel-mpi-17
+   module load intel-mpi-18
+
+(If you loaded the ``intel-tools-18`` module then this automatically loads the Intel
+MPI module for you.)
 
 This makes the compiler wrapper scripts available to you. The name of the  wrapper
 script depends on the compiler suite you are using. In summary:
@@ -207,15 +187,12 @@ in the following sections.
 Using Intel Compilers and Intel MPI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Once you have loaded the ``intel-mpi-17`` module you should next load the appropriate 
-``intel-compilers`` module (e.g. ``intel-compilers-17``):
+You should make the Intel compilers and MPI environment available by loading the 
+``intel-tools-18`` module:
 
 ::
 
-    module load intel-compilers-17
-
-Remember, if you are compiling C++ code, then you will also need to load the ``gcc/6.2.0`` module
-for the C++ 11 headers to be available.
+    module load intel-tools-18
 
 MPI compilers are then available as
 
@@ -229,13 +206,7 @@ If you use the standard names you will end up using the GCC compilers.
 Using GCC Compilers and Intel MPI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Once you have loaded the ``intel-mpi-17`` module you should next load the ``gcc`` module.
-
-::
-
-    module load gcc 
-
-MPI compilers are then available as
+Once you have loaded the ``intel-tools-18`` module, MPI compilers are then available as
 
 * ``mpif90`` - Fortran with MPI
 * ``mpicc`` - C with MPI
@@ -245,17 +216,21 @@ MPI compilers are then available as
 Compiler Information and Options
 --------------------------------
 
-The manual pages for the different compiler suites are available:
+Help is available for the different compiler suites
 
 GCC
-    Fortran ``man gfortran`` ,
-    C/C++ ``man gcc``
+    Fortran ``gfortran --help`` ,
+    C/C++ ``gcc --help``
 Intel
     Fortran ``man ifort`` ,
     C/C++ ``man icc``
 
 Useful compiler options
 ~~~~~~~~~~~~~~~~~~~~~~~
+
+**Note:** For best performance on Tesseract we currently advise that you should use the
+Intel compilers wherever possible as the version of GCC available on the system is
+very old. We aim to install a more up to date version of GCC soon.
 
 Whilst difference codes will benefit from compiler optimisations in
 different ways, for reasonable performance on Tesseract, at least
@@ -287,7 +262,7 @@ GNU
     At ``-O3`` and above or when using ``-ftree-vectorize``
 
 To promote integer and real variables from four to eight byte precision
-for FORTRAN codes the following compiler flags can be used:
+for Fortran codes the following compiler flags can be used:
 
 Intel
     ``-real-size 64 -integer-size 64 -xAVX``
