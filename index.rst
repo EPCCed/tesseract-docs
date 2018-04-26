@@ -18,7 +18,6 @@ This documentation covers:
 * Software Libraries: notes on compiling against specific libraries on Tesseract. Most
   libraries work *as expected* so no additional notes are required however a small number require specific
   documentation
-* Software Tools: Information on using tools such as debuggers and profilers on Tesseract
 
 Information on using the SAFE web interface for managing accounts and reporting on your usage on
 Tesseract (and DiRAC as a whole) can be found on the `DiRAC SAFE Documentation <http://dirac-safe.readthedocs.io>`__
