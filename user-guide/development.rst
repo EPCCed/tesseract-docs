@@ -113,9 +113,10 @@ compatibility with old data. This can be achieved most easily by using
 Available Compiler Suites
 -------------------------
 
-**Note:** As Tesseract uses dynamic linking by default you will generally also need
-to load any modules you used to compile your code in your job submission
-script when you run your code.
+.. note::
+   As Tesseract uses dynamic linking by default you will generally also need
+   to load any modules you used to compile your code in your job submission
+   script when you run your code.
 
 Intel Compiler Suite
 ~~~~~~~~~~~~~~~~~~~~
@@ -151,9 +152,10 @@ Tesseract currently supports the Intel MPI library.
 You should also consult the chapter on running jobs through the batch system
 for examples of how to run jobs compiled against MPI.
 
-**Remember:** by default, all compilers produce dynamic executables on
-Tesseract. This means that you must load the same modules at runtime (usually
-in your job submission script) as you have loaded at compile time.
+.. note::
+   By default, all compilers produce dynamic executables on
+   Tesseract. This means that you must load the same modules at runtime (usually
+   in your job submission script) as you have loaded at compile time.
 
 Using Intel MPI
 ~~~~~~~~~~~~~~~
@@ -200,8 +202,9 @@ MPI compilers are then available as
 * ``mpiicc`` - C with MPI
 * ``mpiicpc`` - C++ with MPI
 
-**Note:** Intel compilers with Intel MPI use non-standard compiler wrapper script names.
-If you use the standard names you will end up using the GCC compilers.
+.. note::
+   Intel compilers with Intel MPI use non-standard compiler wrapper script names.
+   If you use the standard names you will end up using the GCC compilers.
 
 Using GCC Compilers and Intel MPI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -228,9 +231,10 @@ Intel
 Useful compiler options
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**Note:** For best performance on Tesseract we currently advise that you should use the
-Intel compilers wherever possible as the version of GCC available on the system is
-very old. We aim to install a more up to date version of GCC soon.
+.. note::
+   For best performance on Tesseract we currently advise that you should use the
+   Intel compilers wherever possible as the version of GCC available on the system is
+   very old. We aim to install a more up to date version of GCC soon.
 
 Whilst difference codes will benefit from compiler optimisations in
 different ways, for reasonable performance on Tesseract, at least

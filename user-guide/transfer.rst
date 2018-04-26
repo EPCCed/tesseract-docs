@@ -60,6 +60,7 @@ Tesseract as efficiently as possible. The most obvious ways to do this are:
    processed is large, an MPI application able to use multiple nodes may
    be preferable.
 
-**Note:** that the performance of data transfers between Tesseract and your
-local institution may differ depending upon whether the transfer command
-is run on Tesseract or on your local system.
+.. note::
+   The performance of data transfers between Tesseract and your
+   local institution may differ depending upon whether the transfer command
+   is run on Tesseract or on your local system.
