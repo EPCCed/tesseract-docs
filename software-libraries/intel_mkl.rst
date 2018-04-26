@@ -10,13 +10,12 @@ Intel Compilers
 BLAS and LAPACK
 ~~~~~~~~~~~~~~~
 
-To use MKL libraries with the Intel compilers you first need to load the Intel
-compiler module and the Intel tools module:
+To use MKL libraries with the Intel compilers you first need to load
+the Intel tools module:
 
 ::
 
-   module load intel-compilers-17
-   module load intel-tools-17
+   module load intel-tools-18
 
 To include MKL you specify the ``-mkl`` option on your compile and link lines.
 For example, to compile a single source file, Fortran program with MKL you could use:
@@ -34,13 +33,11 @@ ScaLAPACK
 ~~~~~~~~~
 
 The distributed memory linear algebra routines in ScaLAPACK require MPI in addition
-to the compilers and MKL libraries. On Cirrus, this is usually provided by SGI MPT.
+to the compilers and MKL libraries.
 
 ::
 
-   module load intel-compilers-17
-   module load intel-tools-17
-   module load mpt
+   module load intel-tools-18
 
 Once you have the modules loaded you need to use the SGI versions of BLACS
 at link time to include ScaLAPACK. Remember to use the MPI versions of
@@ -48,8 +45,8 @@ the compilers:
 
 ::
 
-   mpif90 -c -o linsolve.o linsolve.f90
-   mpif90 -o linsolve.x linsolve.o -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_sgimpt_lp64 -lpthread -lm -ldl
+   mpiifort -c -mkl=cluster -o linsolve.o linsolve.f90
+   mpiifort -mkl=cluster -o linsolve.x linsolve.o
 
 GNU Compiler
 ------------
@@ -57,13 +54,12 @@ GNU Compiler
 BLAS and LAPACK
 ~~~~~~~~~~~~~~~
 
-To use MKL libraries with the GNU compiler you first need to load the GNU compiler module
-and Intel tools module:
+To use MKL libraries with the GNU compiler you first need to load the
+Intel tools module:
 
 ::
 
-   module load gcc
-   module load intel-tools-16
+   module load intel-tools-18
 
 To include MKL you need to explicitly link against the MKL libraries.
 For example, to compile a single source file, Fortran program with MKL you could use:
@@ -84,21 +80,19 @@ ScaLAPACK
 ~~~~~~~~~
 
 The distributed memory linear algebra routines in ScaLAPACK require MPI in addition
-to the compilers and MKL libraries. On Cirrus, this is usually provided by SGI MPT.
+to the compilers and MKL libraries.
 
 ::
 
-   module load gcc
-   module load intel-tools-16
-   module load mpt
+   module load intel-tools-18
 
 Once you have the modules loaded you need to link against two additional libraries to include ScaLAPACK. 
-Remember to use the MPI versions of the compilers:
+Remember to use the MPI versions of the compilers for GCC:
 
 ::
 
-   mpif90 -f90=gfortran -c -o linsolve.o linsolve.f90
-   mpif90 -f90=gfortran -o linsolve.x linsolve.o -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_sgimpt_lp64 -lpthread -lm -ldl
+   mpif90 -c -o linsolve.o linsolve.f90
+   mpif90 -o linsolve.x linsolve.o -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_lp64 -lpthread -lm -ldl
 
 ILP vs LP libraries
 ~~~~~~~~~~~~~~~~~~~
