@@ -38,9 +38,9 @@ a lower latency than accessing memory on the other NUMA region.
 
 There are three levels of cache, configured as follows:
 
-L1 Cache 32 KB Instr., 32 KB Data (per core)
-L2 Cache 1 MB (per core)
-L3 Cache 16.5 MB (shared)
+* L1 Cache 32 KB Instr., 32 KB Data (per core)
+* L2 Cache 1 MB (per core)
+* L3 Cache 16.5 MB (shared)
 
 OPA Interconnect
 ^^^^^^^^^^^^^^^^
@@ -60,8 +60,9 @@ are available on all nodes.
 The compute nodes are diskless. Each node boots from a cluster management noded called the Rack Leader and NFS mounts the root file system from
 this management node.
 
-**Note:** There are currently no backups of data on Tesseract. The beckup system will be brought online in the future. We strongly advise that
-you keep copies of any critical data on different systems.
+.. note::
+   There are currently no backups of data on Tesseract. The beckup system will be brought online in the future. We strongly advise that
+   you keep copies of any critical data on different systems.
 
 Parallel I/O
 ^^^^^^^^^^^^
