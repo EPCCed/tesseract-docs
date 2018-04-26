@@ -51,7 +51,7 @@ Tesseract:
 
 ::
 
-    ssh username@tesseract.epcc.ed.ac.uk
+    ssh username@tesseract-login1.dirac.ed.ac.uk
 
 To allow remote programs, especially graphical applications to control
 your local display, such as being able to open up a new GUI window (such
@@ -59,7 +59,7 @@ as for a debugger), use:
 
 ::
 
-    ssh -X username@tesseract.epcc.ed.ac.uk
+    ssh -X username@tesseract-login1.dirac.ed.ac.uk
 
 Some sites recommend using the ``-Y`` flag. While this can fix some
 compatibility issues, the ``-X`` flag is more secure.
@@ -171,7 +171,7 @@ the public part of the key to the remote file:
 
 ::
 
-    -bash-4.1$ cat ~/.ssh/id_rsa.pub | ssh user@tesseract.epcc.ed.ac.uk 'cat - >> ~/.ssh/authorized_keys'
+    -bash-4.1$ cat ~/.ssh/id_rsa.pub | ssh user@tesseract-login1.dirac.ed.ac.uk 'cat - >> ~/.ssh/authorized_keys'
     Password: [Password]
 
 (remember to replace "user" with your username).
@@ -183,7 +183,7 @@ key pair) rather than your remote machine *password*.
 
 ::
 
-    -bash-4.1$ ssh user@tesseract.epcc.ed.ac.uk 'date'
+    -bash-4.1$ ssh user@tesseract-login1.dirac.ed.ac.uk 'date'
     Enter passphrase for key '/Home/user/.ssh/id_rsa': [Passphrase]
     Wed May  8 10:36:47 BST 2013
 
@@ -217,7 +217,7 @@ enter your passphrase:
 
 ::
 
-    -bash-4.1$ ssh user@tesseract.epcc.ed.ac.uk 'date'
+    -bash-4.1$ ssh user@tesseract-login1.dirac.ed.ac.uk 'date'
     Warning: Permanently added the RSA host key for IP address '192.62.216.27' to the list of known hosts.
     Wed May  8 10:42:55 BST 2013
 
@@ -252,18 +252,18 @@ an entry in this file which may look something like:
 ::
 
     Host tesseract
-      HostName tesseract.epcc.ed.ac.uk
+      HostName tesseract-login1.dirac.ed.ac.uk
       User user
       ForwardAgent yes
 
 (remember to replace "user" with your username).
 
 The "Host cirrus" line defines a short name for the entry. In this case,
-instead of typing "ssh tesseract.epcc.ed.ac.uk" to access the Tesseract login
-nodes, you could use "ssh tesseract" instead. The remaining lines define
-the options for the "tesseract" host.
+instead of typing "ssh tesseract-login1.dirac.ed.ac.uk" to access the Tesseract login
+nodes, you could use "ssh tesseract-login1" instead. The remaining lines define
+the options for the "tesseract-login1" host.
 
--  ``Hostname tesseract.epcc.ed.ac.uk`` - defines the full address of the
+-  ``Hostname tesseract-login1.dirac.ed.ac.uk`` - defines the full address of the
    host
 -  ``User username`` - defines the username to use by default for this
    host (replace "username" with your own username on the remote host)
@@ -272,7 +272,7 @@ the options for the "tesseract" host.
    private part of your key on your local machine only and export the
    access to remote sites
 
-Now you can use SSH to access Tesseract without needing to enter my
+Now you can use SSH to access Tesseract without needing to enter your
 username or the full hostname every time:
 
 ::
