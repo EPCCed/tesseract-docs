@@ -51,7 +51,7 @@ Tesseract:
 
 ::
 
-    ssh username@tesseract-login1.dirac.ed.ac.uk
+    ssh username@tesseract-login.dirac.ed.ac.uk
 
 To allow remote programs, especially graphical applications to control
 your local display, such as being able to open up a new GUI window (such
@@ -59,7 +59,7 @@ as for a debugger), use:
 
 ::
 
-    ssh -X username@tesseract-login1.dirac.ed.ac.uk
+    ssh -X username@tesseract-login.dirac.ed.ac.uk
 
 Some sites recommend using the ``-Y`` flag. While this can fix some
 compatibility issues, the ``-X`` flag is more secure.
