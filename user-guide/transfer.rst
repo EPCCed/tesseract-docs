@@ -13,7 +13,7 @@ command to transfer a single file to Tesseract:
 
 ::
 
-    scp [options] source_file user@tesseract-login1.dirac.ed.ac.uk:[destination]
+    scp [options] source_file user@tesseract-login.dirac.ed.ac.uk:[destination]
 
 In the above example, the ``[destination]`` is optional, as when left
 out scp will simply copy the source into the users home directory.
@@ -30,7 +30,7 @@ machine. To transfer files to Tesseract the command should have the form:
 
 ::
 
-    rsync [options] -e ssh source user@tesseract-login1.dirac.ed.ac.uk:[destination]
+    rsync [options] -e ssh source user@tesseract-login.dirac.ed.ac.uk:[destination]
 
 In the above example, the ``[destination]`` is optional, as when left
 out rsync will simply copy the source into the users home directory.
