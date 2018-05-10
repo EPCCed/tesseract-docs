@@ -280,6 +280,7 @@ nodes (maximum of 144 physical cores) for 20 minutes would look like:
    # Select 16 full nodes
    #PBS -l select=16
    #PBS -l walltime=00:20:00
+   #PBS -l place=scatter
    
    # Replace [budget code] below with your project code (e.g. t01)
    #PBS -A [budget code]             
@@ -328,6 +329,7 @@ placement should leave space for threads.
    #PBS -N Example_MixedMode_Job
    #PBS -l select=16
    #PBS -l walltime=6:0:0
+   #PBS -l place=scatter
    
    # Replace [budget code] below with your project code (e.g. t01)
    #PBS -A [budget code]
@@ -386,6 +388,7 @@ script like the following:
     #PBS -N ArrayJob
     #PBS -l select=16
     #PBS -l walltime=4:0:0
+    #PBS -l place=scatter
     #PBS -J 1-56
 
     cd ${PBS_O_WORKDIR}

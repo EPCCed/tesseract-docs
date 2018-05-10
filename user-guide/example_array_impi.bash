@@ -4,6 +4,7 @@
 #PBS -N ArrayJob
 #PBS -l select=16
 #PBS -l walltime=4:0:0
+#PBS -l place=scatter
 #PBS -J 1-56
 
 # Replace [budget code] below with your project code (e.g. t01)
