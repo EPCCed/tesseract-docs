@@ -51,7 +51,7 @@ Tesseract:
 
 ::
 
-    ssh username@tesseract-login.dirac.ed.ac.uk
+    ssh username@tesseract.dirac.ed.ac.uk
 
 To allow remote programs, especially graphical applications to control
 your local display, such as being able to open up a new GUI window (such
@@ -59,7 +59,7 @@ as for a debugger), use:
 
 ::
 
-    ssh -X username@tesseract-login.dirac.ed.ac.uk
+    ssh -X username@tesseract.dirac.ed.ac.uk
 
 Some sites recommend using the ``-Y`` flag. While this can fix some
 compatibility issues, the ``-X`` flag is more secure.
@@ -171,7 +171,7 @@ the public part of the key to the remote file:
 
 ::
 
-    -bash-4.1$ cat ~/.ssh/id_rsa.pub | ssh user@tesseract-login1.dirac.ed.ac.uk 'cat - >> ~/.ssh/authorized_keys'
+    -bash-4.1$ cat ~/.ssh/id_rsa.pub | ssh user@tesseract.dirac.ed.ac.uk 'cat - >> ~/.ssh/authorized_keys'
     Password: [Password]
 
 (remember to replace "user" with your username).
@@ -183,7 +183,7 @@ key pair) rather than your remote machine *password*.
 
 ::
 
-    -bash-4.1$ ssh user@tesseract-login1.dirac.ed.ac.uk 'date'
+    -bash-4.1$ ssh user@tesseract.dirac.ed.ac.uk 'date'
     Enter passphrase for key '/Home/user/.ssh/id_rsa': [Passphrase]
     Wed May  8 10:36:47 BST 2013
 
@@ -217,7 +217,7 @@ enter your passphrase:
 
 ::
 
-    -bash-4.1$ ssh user@tesseract-login1.dirac.ed.ac.uk 'date'
+    -bash-4.1$ ssh user@tesseract.dirac.ed.ac.uk 'date'
     Warning: Permanently added the RSA host key for IP address '192.62.216.27' to the list of known hosts.
     Wed May  8 10:42:55 BST 2013
 
