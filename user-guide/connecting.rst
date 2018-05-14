@@ -51,7 +51,7 @@ Tesseract:
 
 ::
 
-    ssh username@tesseract-login1.dirac.ed.ac.uk
+    ssh username@tesseract-login.dirac.ed.ac.uk
 
 To allow remote programs, especially graphical applications to control
 your local display, such as being able to open up a new GUI window (such
@@ -59,7 +59,7 @@ as for a debugger), use:
 
 ::
 
-    ssh -X username@tesseract-login1.dirac.ed.ac.uk
+    ssh -X username@tesseract-login.dirac.ed.ac.uk
 
 Some sites recommend using the ``-Y`` flag. While this can fix some
 compatibility issues, the ``-X`` flag is more secure.
@@ -252,18 +252,18 @@ an entry in this file which may look something like:
 ::
 
     Host tesseract
-      HostName tesseract-login1.dirac.ed.ac.uk
+      HostName tesseract.dirac.ed.ac.uk
       User user
       ForwardAgent yes
 
 (remember to replace "user" with your username).
 
-The "Host cirrus" line defines a short name for the entry. In this case,
-instead of typing "ssh tesseract-login1.dirac.ed.ac.uk" to access the Tesseract login
-nodes, you could use "ssh tesseract-login1" instead. The remaining lines define
-the options for the "tesseract-login1" host.
+The "Host tesseract" line defines a short name for the entry. In this case,
+instead of typing "ssh tesseract.dirac.ed.ac.uk" to access the Tesseract login
+nodes, you could use "ssh tesseract" instead. The remaining lines define
+the options for the "tesseract" host.
 
--  ``Hostname tesseract-login1.dirac.ed.ac.uk`` - defines the full address of the
+-  ``Hostname tesseract.dirac.ed.ac.uk`` - defines the full address of the
    host
 -  ``User username`` - defines the username to use by default for this
    host (replace "username" with your own username on the remote host)
