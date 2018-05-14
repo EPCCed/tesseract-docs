@@ -252,18 +252,18 @@ an entry in this file which may look something like:
 ::
 
     Host tesseract
-      HostName tesseract-login1.dirac.ed.ac.uk
+      HostName tesseract.dirac.ed.ac.uk
       User user
       ForwardAgent yes
 
 (remember to replace "user" with your username).
 
-The "Host cirrus" line defines a short name for the entry. In this case,
-instead of typing "ssh tesseract-login1.dirac.ed.ac.uk" to access the Tesseract login
-nodes, you could use "ssh tesseract-login1" instead. The remaining lines define
-the options for the "tesseract-login1" host.
+The "Host tesseract" line defines a short name for the entry. In this case,
+instead of typing "ssh tesseract.dirac.ed.ac.uk" to access the Tesseract login
+nodes, you could use "ssh tesseract" instead. The remaining lines define
+the options for the "tesseract" host.
 
--  ``Hostname tesseract-login1.dirac.ed.ac.uk`` - defines the full address of the
+-  ``Hostname tesseract.dirac.ed.ac.uk`` - defines the full address of the
    host
 -  ``User username`` - defines the username to use by default for this
    host (replace "username" with your own username on the remote host)
