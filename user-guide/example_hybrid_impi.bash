@@ -26,5 +26,5 @@ export I_MPI_PIN_DOMAIN=omp
 #   Using 32 MPI processes
 #   2 MPI processes per node
 #   12 OpenMP threads per MPI process
-mpirun -n 16 -ppn 2 ./my_mixed_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt
+mpirun -n 32 -ppn 2 ./my_mixed_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt
 

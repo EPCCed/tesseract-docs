@@ -114,7 +114,7 @@ specify three things:
 -  The number of nodes you require via the
    ``-l select=[Nodes]`` option. Each node has 24
    cores (2x 12-core processors). For example, to select 16 nodes
-   (1536 cores in total) you would use
+   (384 cores in total) you would use
    ``-l select=16``. 
 -  The maximum length of time (i.e. walltime) you want the job to run
    for via the ``-l walltime=[hh:mm:ss]`` option. To ensure the
@@ -173,10 +173,10 @@ A sample MPI launch line using ``mpirun`` looks like:
 
 ::
 
-    mpirun -n 1536 -ppn 24 ./my_mpi_executable.x arg1 arg2
+    mpirun -n 384 -ppn 24 ./my_mpi_executable.x arg1 arg2
 
 This will start the parallel executable ``my_mpi_executable.x`` with
-arguments "arg1" and "arg2". The job will be started using 1536 MPI
+arguments "arg1" and "arg2". The job will be started using 384 MPI
 processes, with 24 MPI processes placed on each compute node 
 (this would use all the physical cores on each node). This would
 require 16 nodes to be requested in the PBS options.
@@ -297,10 +297,10 @@ nodes (maximum of 144 physical cores) for 20 minutes would look like:
    export OMP_NUM_THREADS=1
    
    # Launch the parallel job
-   #   Using 1536 MPI processes and 24 MPI processes per node
-   mpirun -n 1536 -ppn 24 ./my_mpi_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt
+   #   Using 384 MPI processes and 24 MPI processes per node
+   mpirun -n 384 -ppn 24 ./my_mpi_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt
 
-This will run your executable "my\_mpi\_executable.x" in parallel on 1536
+This will run your executable "my\_mpi\_executable.x" in parallel on 384
 MPI processes using 16 nodes (24 cores per node, i.e. not using hyper-threading). PBS will
 allocate 16 nodes to your job and mpirun will place 24 MPI processes on each node
 (one per physical core).
@@ -351,7 +351,7 @@ placement should leave space for threads.
    #   Using 32 MPI processes
    #   2 MPI processes per node
    #   12 OpenMP threads per MPI process
-   mpirun -n 16 -ppn 2 ./my_mixed_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt
+   mpirun -n 32 -ppn 2 ./my_mixed_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt
 
 .. _jobarrays:
 
@@ -397,7 +397,7 @@ script like the following:
     module load intel-tools-18
 
     # Run with array index as the first argument to the executable
-    mpirun -n 1536 -ppn 24 ./my_mpi_executable.x $PBS_ARRAY_INDEX
+    mpirun -n 384 -ppn 24 ./my_mpi_executable.x $PBS_ARRAY_INDEX
 
 Starting a job array
 ~~~~~~~~~~~~~~~~~~~~

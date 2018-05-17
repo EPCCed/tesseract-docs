@@ -22,5 +22,5 @@ module load intel-tools-18
 export OMP_NUM_THREADS=1
 
 # Launch the parallel job
-#   Using 1536 MPI processes and 24 MPI processes per node
-mpirun -n 1536 -ppn 24 ./my_mpi_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt
+#   Using 384 MPI processes and 24 MPI processes per node
+mpirun -n 384 -ppn 24 ./my_mpi_executable.x arg1 arg2 > my_stdout.txt 2> my_stderr.txt

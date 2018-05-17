@@ -16,5 +16,5 @@ cd ${PBS_O_WORKDIR}
 module load intel-tools-18
 
 # Run with array index as the first argument to the executable
-mpirun -n 1536 -ppn 24 ./my_mpi_executable.x $PBS_ARRAY_INDEX
+mpirun -n 384 -ppn 24 ./my_mpi_executable.x $PBS_ARRAY_INDEX
 
