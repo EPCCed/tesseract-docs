@@ -222,6 +222,56 @@ to control placement of OpenMP threads. For more information, see:
 
 * `Intel OpenMP Thread Affinity Control <https://software.intel.com/en-us/articles/openmp-thread-affinity-control>`__
 
+Intel MPI: Process Placement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, MPI processes are placed on nodes in a round-robin format. For example, if you 
+are using 4 nodes, 16 MPI processes in total and have 4 MPI processes per node, you would use the command:
+
+::
+
+  mpirun -n 16 -ppn 4 /path/to/my/exe
+
+the processes would be placed in the following way:
+
+::
+
+   MPI process 0: placed on Node 1
+   MPI process 1: placed on Node 2
+   MPI process 2: placed on Node 3
+   MPI process 3: placed on Node 4
+   MPI process 4: placed on Node 1
+   MPI process 5: placed on Node 2
+   MPI process 6: placed on Node 3
+   MPI process 7: placed on Node 4
+   MPI process 8: placed on Node 1
+   ...
+   MPI process 15: placed on Node 4
+
+The alternative way to place MPI processes would be to fill one node with processes before moving onto
+the next node (this is often known as *SMP placement*). This can be achieved within a PBS job on 
+Tesseract by using the ``-f`` flag to pass the node list file explicity. For example:
+
+::
+
+  mpirun -n 16 -ppn 4 -f $PBS_NODEFILE /path/to/my/exe
+
+The processes would be placed in the following way:
+
+::
+
+   MPI process 0: placed on Node 1
+   MPI process 1: placed on Node 1
+   MPI process 2: placed on Node 1
+   MPI process 3: placed on Node 1
+   MPI process 4: placed on Node 2
+   MPI process 5: placed on Node 2
+   MPI process 6: placed on Node 2
+   MPI process 7: placed on Node 2
+   MPI process 8: placed on Node 3
+   ...
+   MPI process 15: placed on Node 4
+
 Intel MPI: MPI-IO setup
 ^^^^^^^^^^^^^^^^^^^^^^^
 
