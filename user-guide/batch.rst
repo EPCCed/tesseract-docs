@@ -93,6 +93,22 @@ Queue Limits
 Queues on Tesseract are designed to enable users to use the system flexibly while 
 retaining fair access for all.
 
+The queues on Tesseract are linked to the physical layout of the hardware on the 
+interconnect to help ensure that jobs have access to nodes with the optimal
+layout on the interconnet topology. In practice, this means that jobs are limited
+to specific numbers of nodes and will be rejected unless those numbers of nodes
+are selected using PBS as described below. The node numbers currently supported
+on Tesseract are:
+
+- 16 nodes (384 cores)
+- 32 nodes (768 cores)
+- 64 nodes (1536 cores)
+- 128 nodes (3072 cores)
+- 256 nodes (6144 cores)
+- 512 nodes (12288 cores)
+
+The maximum runtime for jobs on Tesseract is currently 48 hours.
+
 Output from PBS jobs
 --------------------
 
@@ -115,7 +131,8 @@ specify three things:
    ``-l select=[Nodes]`` option. Each node has 24
    cores (2x 12-core processors). For example, to select 16 nodes
    (384 cores in total) you would use
-   ``-l select=16``. 
+   ``-l select=16``. Remember that only certain node counts are permitted
+   (see the Queue Limits section above for more details).
 -  The maximum length of time (i.e. walltime) you want the job to run
    for via the ``-l walltime=[hh:mm:ss]`` option. To ensure the
    minimum wait time for your job, you should specify a walltime as
