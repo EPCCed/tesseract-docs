@@ -93,6 +93,19 @@ Queue Limits
 Queues on Tesseract are designed to enable users to use the system flexibly while 
 retaining fair access for all.
 
+Available queues, and their limits, can be found using the command
+
+::
+
+    qstat -q
+
+To submit to a specific queue e.g. the queue for 32 node jobs, when your job submit script is called 'submit.pbs' use
+
+::
+
+    qsub -q Q32 submit.pbs
+
+
 Output from PBS jobs
 --------------------
 
