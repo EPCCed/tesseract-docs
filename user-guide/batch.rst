@@ -106,6 +106,10 @@ on Tesseract are:
 - 128 nodes (3072 cores)
 - 256 nodes (6144 cores)
 - 512 nodes (12288 cores)
+- 1024 nodes (24576 cores)
+
+The exception to this layout are the 8 GPU compute nodes where jobs can range
+from 1 to 8 nodes.
 
 The maximum runtime for jobs on Tesseract is currently 48 hours.
 
@@ -150,9 +154,8 @@ options you can provide to PBS. The following options may be useful:
   it will be used in the queue listing and to generate the name of your
   output and/or error file(s). Note there is a limit on the size of the
   name.
-
-To make sure your josb have exclusive node access you should add the
-following PBS option to your jobs:
+- If you wish to use the GPU compute nodes you should specify the ``QGPU``
+  queue with the ``-q QGPU`` option.
 
 .. note::
    All compute nodes on Tesseract are run in exclusive mode. This means that only
@@ -434,13 +437,13 @@ An interactive job allows you to issue ``mpirun`` commands directly
 from the command line without using a job submission script, and to
 see the output from your program directly in the terminal.
 
-To submit a request for an interactive job reserving 4 nodes
-(96 physical cores) for 20 minutes you would
+To submit a request for an interactive job reserving 16 nodes
+(384 physical cores) for 20 minutes you would
 issue the following qsub command from the command line:
 
 ::
 
-    qsub -IVl select=4,walltime=0:20:0 -A [project code]
+    qsub -IVl select=16,walltime=0:20:0 -A [project code]
 
 When you submit this job your terminal will display something like:
 

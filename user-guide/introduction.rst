@@ -20,21 +20,41 @@ You should also tag outputs with the keyword *DiRAC* whenever possible.
 Hardware
 --------
 
-The current Extreme Scaling compute provision (Tesseract) consists of 844 compute nodes connected together by a single Intel OPA fabric.
+The current Extreme Scaling compute provision (Tesseract) consists of 1468 standard compute nodes and 8 GPU compute nodes
+connected together by a single Intel OPA fabric.
 
 There are 2 login nodes that share a common software environment and file system with the compute nodes.
 
-Compute Nodes
-^^^^^^^^^^^^^
+Standard Compute Nodes
+^^^^^^^^^^^^^^^^^^^^^^
 
-Tesseract compute nodes each contain two 2.1 GHz, 12-core Intel Xeon Silver 4116 (Skylake) series processors. Each of the cores in these
+Tesseract standard compute nodes each contain two 2.1 GHz, 12-core Intel Xeon Silver 4116 (Skylake) series processors. Each of the cores in these
 processors support 2 hardware threads (Hyperthreads), which are disabled by default.
 
-There are 844 compute nodes on Tesseract giving a total of 20,256 cores.
+There are 1468 standard compute nodes on Tesseract giving a total of 35,232 cores.
 
 The compute nodes on Tesseract have 96 GB of memory shared between the two processors. The memory is arranged in a non-uniform access (NUMA)
 form: each 12-core processor is a single NUMA region with local memory of 48 GB. Access to the local memory by cores within a NUMA region has
 a lower latency than accessing memory on the other NUMA region.
+
+There are three levels of cache, configured as follows:
+
+* L1 Cache 32 KB Instr., 32 KB Data (per core)
+* L2 Cache 1 MB (per core)
+* L3 Cache 16.5 MB (shared)
+
+GPU Compute Nodes
+^^^^^^^^^^^^^^^^^
+
+Tesseract GPU compute nodes each contain two 2.1 GHz, 12-core Intel Xeon Silver 4116 (Skylake) series processors. Each of the cores in these
+processors support 2 hardware threads (Hyperthreads), which are disabled by default. The nodes also each contain four NVIDIA Tesla
+V100-PCIE-16GB (Volta) GPU accelerators connected to the host processors and each other via PCIe.
+
+There are 8 GPU compute nodes on Tesseract giving a total of 192 cores and 64 GPU accelerators.
+
+The compute nodes on Tesseract have 96 GB of memory shared between the two processors. The memory is arranged in a non-uniform access (NUMA)
+form: each 12-core processor is a single NUMA region with local memory of 48 GB. Access to the local memory by cores within a NUMA region has
+a lower latency than accessing memory on the other NUMA region. 
 
 There are three levels of cache, configured as follows:
 

@@ -8,9 +8,11 @@ It is part of the `STFC <http://www.stfc.ac.uk>`_  `DiRAC National HPC Service <
 DiRAC Extreme Scaling (also known as Tesseract) is available to industry, commerce and academic researchers. For information on how
 to get access to the system please see the `DiRAC website <http://www.dirac.ac.uk>`_.
 
-The Tesseract compute service is based around an HPE SGI 8600 system with 20,256 cores. There are 844 compute
-nodes, each with 96 GB of memory, connected together by a single Intel Omni-Path Architechture fabric. Each node
-contains two 2.1 GHz, 12-core Intel Xeon (Skylake) 4116 processors, and all nodes access the 3 PB Lustre file system.
+The Tesseract compute service is based around an HPE SGI 8600 system with 1476 compute nodes. There are 1468 standard compute
+nodes, each with two 2.1 GHz, 12-core Intel Xeon (Skylake) Silver 4116 processors and 96 GB of memory. In addition, there are
+8 GPU compute nodes each with two 2.1 GHz, 12-core Intel Xeon (Skylake) Silver 4116 processors; 96 GB of memory; and 4 NVidia V100 (Volta) GPU
+accelerators connected over PCIe. All compute nodes are connected together by a single Intel Omni-Path Architechture fabric
+and all nodes access the 3 PB Lustre file system.
 
 This documentation covers:
 
@@ -35,6 +37,7 @@ and the documentation for the `ARCHER National Supercomputing Service <http://ww
    user-guide/resource_management
    user-guide/development
    user-guide/batch
+   user-guide/gpu
    user-guide/reading
 
 .. toctree::
