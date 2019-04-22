@@ -1,4 +1,3 @@
-
 .. _tandc:
 
 Terms and Conditions of Access
@@ -6,10 +5,8 @@ Terms and Conditions of Access
 
 These Terms and Conditions of Access are presented to each user when
 they register. We anticipate that they will change rarely, if at all.
-Note that the Terms and Conditions include an undertaking to observe
-  the
-Code of Conduct. It also includes an agreement to the Service
-  processing
+Note that the Terms and Conditions include an undertaking to observe the
+Code of Conduct. It also includes an agreement to the Service processing
 the user's personal data; in return, the Service undertakes to follow
 the :ref:`Personal Data and Privacy Policy <privacy>`.
 
@@ -58,8 +55,7 @@ We agree:
 ---------
 
 -  as far as we reasonably can, to provide a 24-hour service as
-   described at
-   `<http://cirrus.readthedocs.io> <http://cirrus.readthedocs.io/>`__,
+   described at `<http://tesseract-dirac.readthedocs.io> <http://tesseract-dirac.readthedocs.io/>`__,
    it
    being understood that there will be times when the service is
    unavailable, for example as a result of unexpected failures,

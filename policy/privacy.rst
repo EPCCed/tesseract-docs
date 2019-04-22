@@ -21,14 +21,14 @@ analyse and improve its performance, security, its patterns of use, and
 to plan for the future.
 
 This information will be available to appropriate members of the staff
-who are working on the Tesseract project. Resource usage information will
+who are working on the Tesseract service. Resource usage information will
 be uploaded to the SAFE where it will be processed according to the SAFE
 data privacy policy.
 
 Periodically, the service may be examined by auditors acting on behalf
-of the system owners, the Engineering and Physical Sciences Research
-Council (EPSRC). These may see your personal data. They will be acting
-under conditions of professional confidentiality.
+of the system owners, The University of Edinburgh. These may see your
+personal data. They will be acting under conditions of professional
+confidentiality.
 
 We reserve the right to monitor use of the service by your accounts,
 including anything transmitted over the Internet, and any data or
