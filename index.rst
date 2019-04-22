@@ -46,3 +46,10 @@ and the documentation for the `ARCHER National Supercomputing Service <http://ww
 
    software-libraries/intel_mkl
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Policies
+
+   policy/tandc
+   policy/privacy
+
