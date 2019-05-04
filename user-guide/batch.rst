@@ -143,6 +143,9 @@ specify three things:
    short as possible for your job (i.e. if your job is going to run for
    3 hours, do not specify 12 hours). On average, the longer the
    walltime you specify, the longer you will queue for.
+-  The placement option '-l place=scatter:excl' to ensure that parallel
+   processes/threads are scheduled to the full set of compute nodes
+   assigned to the job.
 -  The project code that you want to charge the job to via the
    ``-A [project code]`` option
 
