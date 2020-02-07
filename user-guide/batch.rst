@@ -449,7 +449,7 @@ issue the following qsub command from the command line:
     qsub -IVl select=16:ncpus=24,walltime=0:20:0 -A [project code]
 
 ..note ::
-  Unlike non-interactive jobs, you must specfiy the number of cores 
+  Unlike non-interactive jobs, you must specify the number of cores 
   you want to use per node by adding `:ncpus=24` to the select statement.
 
 When you submit this job your terminal will display something like:
