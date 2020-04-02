@@ -69,6 +69,116 @@ setting only allows the user access to any file or directory created.
 The user can then selectively enable "group" and/or "other" access to
 particular files or directories if required.
 
+DMF tiered storage
+------------------
+
+As well as the fast, parallel Lustre storage, Tesseract also provides a
+tiered storage solution based on zero watt disk storage and tape storage.
+This system is built on the HPE DMF solution and provides two functions:
+
+   - Backup of all data on the Tesseract Lustre file system
+   - Policy-based transfer of data that has not been accessed for a long 
+   period from Lustre to tape to free up space on the Lustre file system.
+
+Files moved off by the policy method are still visible on the Lustre file system
+but will suffer from long access times as they are retrieved from tape. Users
+can query the status of files to find out if they are on Lustre or tape and 
+can request the retrieval of data on tape. This allows users to retrieve data
+before it is required by compute jobs so that they are not held up by the long
+access times.
+
+Below we cover the commands for querying and retrieving data that has been moved
+off to tape via the DMF policies.
+
+DMF data movement policies
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Currently, the policies in place on Tesseract run daily to automatically remove
+any files from Lustre (but retain on tape with a file stub on Lustre) based on
+**both** of the following criteria being true:
+
+   - The file is larger than 1 GiB in size; and
+   - the file has not been accessed in the past three months.
+
+In addition, the policies only start running when the Lustre file system is
+more than 80% full and stop running when the Lustre file system reaches
+75% full.
+
+Checking the status of files: ``lfs hsm_state``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. warning::
+
+   You should not use any of the ``lfs`` HSM subcommands other than those
+   documented in this User Guide (even though they may be documented elsewhere
+   on the web). Use of other subcommands may result in loss of data with no way
+   to get it back.
+
+You use the ``lfs hsm_state`` (HSM == Hierarchical Storage Manager) command to
+check the state of a particular file. For example
+
+::
+
+   [dc-user1@tesseract-login1 ~]$ lfs hsm_state testfile
+   testfile: (0x00000000)
+
+There is no additional status associated with the file ``testfile`` so it is 
+currently stored on the Lustre storage.
+
+Looking at a file that has released from the Lustre file system via the DMF policies:
+
+::
+
+   [dc-user1@tesseract-login1 ~]$ lfs hsm_state large_file.dat
+   large-file.dat: (0x0000000d) released exists archived, archive_id:1
+
+Shows additional status information indicating that it has been archived
+to tape and the space released from Lustre to be reused for other data.
+
+.. info::
+
+   Checking the status of all files in a directory is more complex as ``lfs hsm_state``
+   does not support globbing (so you **cannot** use ``lfs hsm_state *``). You must
+   pass the file list to ``xargs``. For example: ``find -maxdepth 1 -type f | xargs lfs hsm_state``
+
+Retrieving files from tape
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. warning::
+
+   You should not use any of the ``lfs`` HSM subcommands other than those
+   documented in this User Guide (even though they may be documented elsewhere
+   on the web). Use of other subcommands may result in loss of data with no way
+   to get it back.
+
+You can retrieve a from tape simply by trying to access it; however, your terminal
+session or program will stall while waiting for the data to be retrieved from tape.
+
+Usually, you will want to retrieve the data in the background ahead of when you want
+to use it. To retrieve in the background, first update the last access time (using
+``touch``) so the file will not be a prime candidate for release again and ask for
+it to be retrieved using the ``lfs hsm_restore`` command:
+
+::
+
+   [dc-user1@tesseract-login1 ~]$ touch -a large-file.dat
+   [dc-user1@tesseract-login1 ~]$ lfs hsm_restore large-file.dat
+ 
+After a while the ``released`` tag will disappear from the file so you know that
+it has been restored:
+
+::
+
+   [dc-user1@tesseract-login1 ~]$ lfs hsm_state large-file.dat
+   large-file.dat: (0x00000009) exists archived, archive_id:1
+
+As for the status command, the ``lfs hsm_restore`` command does not support
+globbing so to restore multiple files you will need to use the ``xargs`` 
+command.
+
+File system use
+---------------
+
 ASCII (or formatted) files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
