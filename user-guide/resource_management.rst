@@ -77,23 +77,22 @@ tiered storage solution based on zero watt disk storage and tape storage.
 This system is built on the HPE DMF solution and provides two functions:
 
    - Backup of all data on the Tesseract Lustre file system
-   - Policy-based transfer of data that has not been accessed for a long 
-   period from Lustre to tape to free up space on the Lustre file system.
+   - Policy-based release of data that has not been accessed for a long period from Lustre to tape storage to free up space on the Lustre file system.
 
-Files moved off by the policy method are still visible on the Lustre file system
+Files released from Lustre by the policy method are still visible on the Lustre file system
 but will suffer from long access times as they are retrieved from tape. Users
 can query the status of files to find out if they are on Lustre or tape and 
 can request the retrieval of data on tape. This allows users to retrieve data
 before it is required by compute jobs so that they are not held up by the long
 access times.
 
-Below we cover the commands for querying and retrieving data that has been moved
-off to tape via the DMF policies.
+Below we cover the commands for querying and retrieving data that has been released to
+tape via the DMF policies.
 
 DMF data movement policies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Currently, the policies in place on Tesseract run daily to automatically remove
+Currently, the policies in place on Tesseract run daily to automatically release
 any files from Lustre (but retain on tape with a file stub on Lustre) based on
 **both** of the following criteria being true:
 
