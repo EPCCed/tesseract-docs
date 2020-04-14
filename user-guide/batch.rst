@@ -106,7 +106,7 @@ on Tesseract are:
 - 128 nodes (3072 cores)
 - 256 nodes (6144 cores)
 - 512 nodes (12288 cores)
-- 1024 nodes (24576 cores)
+- 1024 nodes (24576 cores) - available by request only, contact `dirac-support@epcc.ed.ac.uk <mailto:dirac-support@epcc.ed.ac.uk>`_
 
 The exception to this layout are the 8 GPU compute nodes where jobs can range
 from 1 to 8 nodes.
