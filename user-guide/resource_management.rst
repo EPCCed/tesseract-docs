@@ -160,7 +160,7 @@ it to be retrieved using the ``lfs hsm_restore`` command:
 
 ::
 
-   [dc-user1@tesseract-login1 ~]$ touch -a large-file.dat
+   [dc-user1@tesseract-login1 ~]$ touch large-file.dat
    [dc-user1@tesseract-login1 ~]$ lfs hsm_restore large-file.dat
  
 After a while the ``released`` tag will disappear from the file so you know that
