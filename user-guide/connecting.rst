@@ -127,9 +127,11 @@ correctly to be able to access Tesseract.
 
   When you first log into Tesseract, you will be prompted to change your
   initial password. This is a three step process:
+  
   1. When promoted to enter your ldap password: Re-enter the password you retrieved from SAFE
   2. When prompted to enter your new password: type in a new password
   3. When prompted to re-enter the new password: re-enter the new password
+  
   Your password has now been changed
 
 To allow remote programs, especially graphical applications to control
