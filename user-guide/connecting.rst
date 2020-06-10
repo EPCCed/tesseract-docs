@@ -13,7 +13,7 @@ Access credentials
 
 To access Tesseract, you need to use two credentials: your password and an SSH
 key pair protected by a passphrase. You can find more detailed instructions on
-how to set up your credentials to access Tesseraqct from Windows, macOS and Linux
+how to set up your credentials to access Tesseract from Windows, macOS and Linux
 below.
 
 SSH Key Pairs
@@ -110,7 +110,7 @@ Tesseract:
 
 You will first be prompted for the passphrase associated with your
 SSH key pair. Once you have entered your passphrase successfully, you
-wil then be prompted for your password. You need to enter both 
+will then be prompted for your password. You need to enter both 
 correctly to be able to access Tesseract.
 
 .. note::
