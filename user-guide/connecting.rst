@@ -13,7 +13,7 @@ Access credentials
 
 To access Tesseract, you need to use two credentials: your password and an SSH
 key pair protected by a passphrase. You can find more detailed instructions on
-how to set up your credentials to access ARCHER from Windows, macOS and Linux
+how to set up your credentials to access Tesseraqct from Windows, macOS and Linux
 below.
 
 SSH Key Pairs
