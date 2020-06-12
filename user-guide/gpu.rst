@@ -53,7 +53,7 @@ You can now use ``nvcc`` to compile your source code, e.g.:
 Submitting jobs to the GPU nodes
 --------------------------------
 
-Two additional options are needed in GPU job submission scripts over those in standard jobs:
+One additional option is needed in GPU job submission scripts over those in standard jobs:
 
  * ``-q QGPU`` This option is required to submit the job to the ``gpu`` queue on Tesseract
 
