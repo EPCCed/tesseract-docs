@@ -3,7 +3,7 @@ Connecting to Tesseract
 
 On the Tesseract system, interactive access can be achieved via SSH, either
 directly from a command line terminal or using an SSH client. In
-addition data can be transfered to and from the Tesseract system using
+addition data can be transferred to and from the Tesseract system using
 ``scp`` from the command line or by using a file transfer client.
 
 This section covers the basic connection methods.
@@ -203,7 +203,7 @@ Now you can use SSH to access Tesseract without needing to enter your username o
 
 ::
 
- -bash-4.1$ ssh archer
+ -bash-4.1$ ssh tesseract
 
 You can set up as many of these entries as you need in your local configuration file. Other options are available. See the ssh_config man page (or ``man ssh_config`` on any machine with SSH installed) for a description of the SSH configuration file. You may find the ``IdentityFile`` option useful if you have to manage multiple SSH key pairs for different systems as this allows you to specify which SSH key to use for each system.
 
