@@ -48,7 +48,7 @@ GPU Compute Nodes
 
 Tesseract GPU compute nodes each contain two 2.1 GHz, 12-core Intel Xeon Silver 4116 (Skylake) series processors. Each of the cores in these
 processors support 2 hardware threads (Hyperthreads), which are disabled by default. The nodes also each contain four NVIDIA Tesla
-V100-PCIE-16GB (Volta) GPU accelerators connected to the host processors and each other via PCIe.
+V100-PCIE-16GB (Volta) GPU accelerators connected to the host processors and each other via [NVLink](https://www.nvidia.com/en-gb/data-center/nvlink/).
 
 There are 8 GPU compute nodes on Tesseract giving a total of 192 cores and 64 GPU accelerators.
 
@@ -81,8 +81,8 @@ The compute nodes are diskless. Each node boots from a cluster management noded 
 this management node.
 
 .. note::
-   There are currently no backups of data on Tesseract. The beckup system will be brought online in the future. We strongly advise that
-   you keep copies of any critical data on different systems.
+
+   Data on the Lustre file system is automatically backed up to a separate tape library.
 
 Parallel I/O
 ^^^^^^^^^^^^
