@@ -11,8 +11,9 @@ to get access to the system please see the `DiRAC website <http://www.dirac.ac.u
 The Tesseract compute service is based around an HPE SGI 8600 system with 1476 compute nodes. There are 1468 standard compute
 nodes, each with two 2.1 GHz, 12-core Intel Xeon (Skylake) Silver 4116 processors and 96 GB of memory. In addition, there are
 8 GPU compute nodes each with two 2.1 GHz, 12-core Intel Xeon (Skylake) Silver 4116 processors; 96 GB of memory; and 4 NVidia V100 (Volta) GPU
-accelerators connected over PCIe. All compute nodes are connected together by a single Intel Omni-Path Architechture fabric
-and all nodes access the 3 PB Lustre file system.
+accelerators connected over NVlink. All compute nodes are connected together by a single Intel Omni-Path fabric
+and all nodes access the 3 PB Lustre file system. As well as the fast, parallel Lustre storage, Tesseract also provides a tiered
+storage solution based on zero watt disk storage and tape storage built using HPE DMF.
 
 This documentation covers:
 
