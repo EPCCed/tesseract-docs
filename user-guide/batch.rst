@@ -111,7 +111,16 @@ on Tesseract are:
 The exception to this layout are the 8 GPU compute nodes where jobs can range
 from 1 to 8 nodes.
 
-The maximum runtime for jobs on Tesseract is currently 48 hours.
+- The maximum runtime for jobs in the standard CPU queues on Tesseract is currently 48 hours
+- The maximum runtime for jobs in the standard GPU queues on Tesseract is currently 24 hours
+
+Low priority queues
+-------------------
+
+Each of the queues on Tesseract has a low priority counterpart. Jobs that run in the low 
+priority queues are not charged against the user's budget but have a much lower priority
+than charged jobs so will only run if there are no eligbile charged jobs waiting for 
+resources.
 
 Output from PBS jobs
 --------------------
@@ -137,12 +146,21 @@ specify three things:
    (384 cores in total) you would use
    ``-l select=16``. Remember that only certain node counts are permitted
    (see the Queue Limits section above for more details).
--  The maximum length of time (i.e. walltime) you want the job to run
-   for via the ``-l walltime=[hh:mm:ss]`` option. To ensure the
-   minimum wait time for your job, you should specify a walltime as
-   short as possible for your job (i.e. if your job is going to run for
-   3 hours, do not specify 12 hours). On average, the longer the
-   walltime you specify, the longer you will queue for.
+-  The walltime. This can be specified in two ways: as a hard ``walltime``
+   which sets the maximum walltime for the job or as a "shrink-to-fit"
+   job where a ``min_walltime`` and a ``max_walltime`` are set and the
+   scheduler chooses a walltime between these extremes to start the job
+   as soon as possible.
+   + The maximum length of time (i.e. walltime) you want the job to run
+     for via the ``-l walltime=[hh:mm:ss]`` option. To ensure the
+     minimum wait time for your job, you should specify a walltime as
+     short as possible for your job (i.e. if your job is going to run for
+     3 hours, do not specify 12 hours). On average, the longer the
+     walltime you specify, the longer you will queue for.
+   + Shrink-to-fit jobs specify a ``min_walltime`` and ``max_walltime``
+     and the scheduler picks a walltime between these valuse that starts
+     the job as soon as possible. Once a job starts, you can find the 
+     chosen walltime using the ``qstat -f <jobid>`` command.
 -  The placement option '-l place=scatter:excl' to ensure that parallel
    processes/threads are scheduled to the full set of compute nodes
    assigned to the job.
@@ -163,6 +181,14 @@ options you can provide to PBS. The following options may be useful:
 .. note::
    All compute nodes on Tesseract are run in exclusive mode. This means that only
    one job at a time can run on any compute node.
+
+Shrink-to-fit jobs
+------------------
+
+Shrink-to-fit jobs specify a ``min_walltime`` and ``max_walltime``
+and the scheduler picks a walltime between these valuse that starts
+the job as soon as possible. Once a job starts, you can find the 
+chosen walltime using the ``qstat -f <jobid>`` command.
 
 Running MPI parallel jobs
 -------------------------
