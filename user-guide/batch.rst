@@ -190,6 +190,18 @@ and the scheduler picks a walltime between these valuse that starts
 the job as soon as possible. Once a job starts, you can find the 
 chosen walltime using the ``qstat -f <jobid>`` command.
 
+For example, suppose your typical job requires 48 hours of wall time.
+If there are fewer than 48 hours available in an upcoming slot then the
+job cannot run. However, if you know that your job can do enough useful
+work running for 24h days or longer, you can submit it in the following way:
+
+  qsub -l min_walltime=24:00:00,max_walltime=48:00:00 job_script
+
+When PBS attempts to run your job, it will initially look for a time slot
+of 48 hours. When no such time slot is found, it will look for shorter and
+shorter time slots, down to the minimum wall time of 24 hours and, if it
+finds an acceptable time slot, the job will start.
+
 Running MPI parallel jobs
 -------------------------
 
