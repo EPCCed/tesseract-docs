@@ -74,9 +74,8 @@ DMF tiered storage
 
 As well as the fast, parallel Lustre storage, Tesseract also provides a
 tiered storage solution based on zero watt disk storage and tape storage.
-This system is built on the HPE DMF solution and provides two functions:
+This system is built on the HPE DMF solution and provides the following function:
 
-   - Backup of all data on the Tesseract Lustre file system
    - Policy-based release of data that has not been accessed for a long period from Lustre to tape storage to free up space on the Lustre file system.
 
 Files released from Lustre by the policy method are still visible on the Lustre file system
