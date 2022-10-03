@@ -1,36 +1,35 @@
 Connecting to Tesseract
 =======================
 
-On the Tesseract system, interactive access can be achieved via SSH, either
-directly from a command line terminal or using an SSH client. In
-addition data can be transferred to and from the Tesseract system using
-``scp`` from the command line or by using a file transfer client.
+You can only connect to Tesseract from the [Tursa]() system. You should
+follow the instructions on [connecting to Tursa]() to make sure you are 
+logged into Tursa before completing the steps below.
 
-This section covers the basic connection methods.
+To transfer data off Tesseract we recommend that you either push using scp 
+to an external host that allows SSH access. If the system you want to transfer
+to does not support SSH connections, first transfer the data to
+Tursa before pulling the data from Tursa using scp.
 
 Access credentials
 ------------------
 
 To access Tesseract, you need to use two credentials: your password and an SSH
 key pair protected by a passphrase. You can find more detailed instructions on
-how to set up your credentials to access Tesseract from Windows, macOS and Linux
-below.
+how to set up your credentials to access Tesseract from Tursa below.
 
 SSH Key Pairs
 ~~~~~~~~~~~~~
 
-You will need to generate an SSH key pair protected by a passphrase to access
+You will need to generate an SSH key pair on Tursa protected by a passphrase to access
 Tesseract.
 
-Using a terminal (the command line), set up a key pair that contains
+From your account on Tursa, set up a key pair that contains
 your e-mail address and enter a passphrase you will use to unlock the
 key:
 
 ::
 
-    ssh-keygen -t rsa -C "your@email.com"
-    ...
-    -bash-4.1$ ssh-keygen -t rsa -C "your@email.com"
+    [dc-user1@tursa-login1 ~]$ ssh-keygen -t rsa -C "your@email.com"
     Generating public/private rsa key pair.
     Enter file in which to save the key (/Home/user/.ssh/id_rsa): [Enter]
     Enter passphrase (empty for no passphrase): [Passphrase]
@@ -78,40 +77,17 @@ using the *passwd* command or when you are prompted the first time you login.
 This change will not be reflected in the SAFE. If you forget your password,
 you should use the SAFE to request a new one-shot password.
 
-SSH Clients
+Logging in from Tursa
 -----------
 
-Interaction with Tesseract is done remotely, over an encrypted
-communication channel, Secure Shell version 2 (SSH-2). This allows
-command-line access to one of the login nodes of a Tesseract, from which
-you can run commands or use a command-line text editor to edit files.
-SSH can also be used to run graphical programs such as GUI text editors
-and debuggers when used in conjunction with an X client.
+Access to Tesseract is only available by first logging into Tursa. You should
+follow the [instructions on how to connect to Tursa]() in the fist instance.
 
-Logging in from Linux and MacOS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Once you are logged into Tursa, you can then access Tesseract with:
 
-Linux distributions and MacOS each come installed with a terminal
-application that can be use for SSH access to the login nodes. Linux
-users will have different terminals depending on their distribution and
-window manager (e.g. GNOME Terminal in GNOME, Konsole in KDE). Consult
-your Linux distribution's documentation for details on how to load a
-terminal.
-
-MacOS users can use the Terminal application, located in the Utilities
-folder within the Applications folder.
-
-You can use the following command from the terminal window to login into
-Tesseract:
-
-::
-
-    ssh username@tesseract.dirac.ed.ac.uk
-
-You will first be prompted for the passphrase associated with your
-SSH key pair. Once you have entered your passphrase successfully, you
-will then be prompted for your password. You need to enter both 
-correctly to be able to access Tesseract.
+```
+ssh username@tesseract.dirac.ed.ac.uk
+```
 
 .. note::
 
@@ -133,77 +109,4 @@ correctly to be able to access Tesseract.
   3. When prompted to re-enter the new password: re-enter the new password
   
   Your password has now been changed
-
-To allow remote programs, especially graphical applications to control
-your local display, such as being able to open up a new GUI window (such
-as for a debugger), use:
-
-::
-
-    ssh -X username@tesseract.dirac.ed.ac.uk
-
-Some sites recommend using the ``-Y`` flag. While this can fix some
-compatibility issues, the ``-X`` flag is more secure.
-
-Current MacOS systems do not have an X window system. Users should
-install the XQuartz package to allow for SSH with X11 forwarding on MacOS
-systems:
-
-* `XQuartz website <http://www.xquartz.org/>`__
-
-Logging in from Windows using MobaXterm
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-A typical Windows installation will not include a terminal client,
-though there are various clients available. We recommend all our Windows
-users to download and install MobaXterm to access Tesseract. It is very
-easy to use and includes an integrated X server with SSH client to run
-any graphical applications on Tesseract.
-
-You can download MobaXterm Home Edition (Installer Edition) from the
-following link:
-
-* `Install MobaXterm <http://mobaxterm.mobatek.net/download-home-edition.html>`__
-
-Double-click the downloaded Microsoft Installer file (.msi), and the
-Windows wizard will automatically guides you through the installation
-process. Note, you might need to have administrator rights to install on
-some Windows OS. Also make sure to check whether Windows Firewall hasn't
-blocked any features of this program after installation.
-
-Start MobaXterm using, for example, the icon added to the Start menu
-during the installation process.
-
-If you would like to run any small remote GUI applications, then make
-sure to use -X option along with the ssh command (see above) to enable
-X11 forwarding, which allows you to run graphical clients on your local
-X server.
-
-Making access more convenient using the SSH configuration file
---------------------------------------------------------------
-
-Typing in the full command to login or transfer data to Tesseract can become tedious as it often has to be repeated many times. You can use the SSH configuration file, usually located on your local machine at ``.ssh/config`` to make things a bit more convenient.
-
-Each remote site (or group of sites) can have an entry in this file which may look something like:
-
-::
-
- Host tesseract
-   HostName tesseract.dirac.ed.ac.uk
-   User username
-
-(remember to replace ``username`` with your actual username!).
-
-The ``Host tesseract`` line defines a short name for the entry. In this case, instead of typing ``ssh username@tesseract.dirac.ed.ac.uk`` to access the Tesseract login nodes, you could use ``ssh tesseract`` instead. The remaining lines define the options for the ``tesseract`` host.
-
- - ``Hostname tesseract.dirac.ed.ac.uk`` - defines the full address of the host
- - ``User username`` - defines the username to use by default for this host (replace ``username`` with your own username on the remote host)
-
-Now you can use SSH to access Tesseract without needing to enter your username or the full hostname every time:
-
-::
-
- -bash-4.1$ ssh tesseract
-
-You can set up as many of these entries as you need in your local configuration file. Other options are available. See the ssh_config man page (or ``man ssh_config`` on any machine with SSH installed) for a description of the SSH configuration file. You may find the ``IdentityFile`` option useful if you have to manage multiple SSH key pairs for different systems as this allows you to specify which SSH key to use for each system.
 
