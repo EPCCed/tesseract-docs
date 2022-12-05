@@ -1,8 +1,8 @@
 Connecting to Tesseract
 =======================
 
-You can only connect to Tesseract from the [Tursa]() system. You should
-follow the instructions on [connecting to Tursa]() to make sure you are 
+You can only connect to Tesseract from the [Tursa](https://epcced.github.io/dirac-docs/tursa-user-guide/) system. You should
+follow the instructions on [connecting to Tursa](https://epcced.github.io/dirac-docs/tursa-user-guide/connecting/) to make sure you are 
 logged into Tursa before completing the steps below.
 
 To transfer data off Tesseract we recommend that you either push using scp 
