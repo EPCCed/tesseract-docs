@@ -1,8 +1,8 @@
 Connecting to Tesseract
 =======================
 
-You can only connect to Tesseract from the [Tursa](https://epcced.github.io/dirac-docs/tursa-user-guide/) system. You should
-follow the instructions on [connecting to Tursa](https://epcced.github.io/dirac-docs/tursa-user-guide/connecting/) to make sure you are 
+You can only connect to Tesseract from the `Tursa`_ system. You should
+follow the instructions on `connecting to Tursa <https://epcced.github.io/dirac-docs/tursa-user-guide/connecting/>`_ to make sure you are 
 logged into Tursa before completing the steps below.
 
 To transfer data off Tesseract we recommend that you either push using scp 
@@ -80,14 +80,14 @@ you should use the SAFE to request a new one-shot password.
 Logging in from Tursa
 -----------
 
-Access to Tesseract is only available by first logging into Tursa. You should
-follow the [instructions on how to connect to Tursa]() in the fist instance.
+Access to Tesseract is only available by first logging into `Tursa <https://epcced.github.io/dirac-docs/tursa-user-guide/>`_. You should
+follow the `instructions on how to connect to Tursa <https://epcced.github.io/dirac-docs/tursa-user-guide/connecting/>`_ in the fist instance.
 
 Once you are logged into Tursa, you can then access Tesseract with:
 
-```
-ssh username@tesseract.dirac.ed.ac.uk
-```
+.. code-block:: sh
+
+    ssh username@tesseract.dirac.ed.ac.uk
 
 .. note::
 
