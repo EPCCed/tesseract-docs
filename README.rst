@@ -1,8 +1,8 @@
 Tesseract Documentation
 =======================
 
-*Tesseract was part of the Extreme Scaling part of the DiRAC UK national HPC service and finished in March 2023. The
-follow-on service is `Tursa <https://epcced.github.io/dirac-docs>`_.*
+Tesseract was part of the Extreme Scaling part of the DiRAC UK national HPC service and finished in March 2023. The
+follow-on service is `Tursa <https://epcced.github.io/dirac-docs>`_.
 
 This repository contains the documentation for the service and is linked to a rendered version on ReadTheDocs.
 
